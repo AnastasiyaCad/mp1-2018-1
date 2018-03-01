@@ -6,32 +6,28 @@ using namespace std;
 class  Polinom
 {
 	int n;
-	float x;
-	int *koef;
+	double *koef;
 public:
-	void InputPolynom();
-	int Print_n();
-	void Count();
-	void Print_koef();
+	int Input_n();
+	int Output_n(int n);
+	int Output_koef(int i); 
+	void Input_koef();
+	void Calculate();
 
 	Polinom() 
 	{
 		n = 0;
-		koef = new int[n + 2];
+		koef = new double[n + 1];
 		koef[0] = 0;
 	};
-	Polinom(int _n, int *_koef)
+	Polinom(int _n, double *_koef)
 	{
-		n = 0;
+		n = _n;
+		koef = new double[_n + 1];
 		for (int i = 0; i <= _n; i++)
-		{
-			if (_koef[i] != 0) n = i;
-			koef = new int[n + 2];
-			for (int i = 0; i <= n; i++)
-				koef[i] = _koef[i];
-		}
-
+			koef[i] = _koef[i];
 	};
+
 	Polinom(const Polinom &p);
 	Polinom::~Polinom();
 };
@@ -39,7 +35,7 @@ public:
 Polinom::Polinom(const Polinom &p)
 {
 	n = p.n;
-	koef = new int[n + 2];
+	koef = new double[n + 1];
 	for (int i = 0; i <= n; i++)
 		koef[i] = p.koef[i];
 }
@@ -49,11 +45,16 @@ Polinom::~Polinom()
 	delete[] koef;
 }
 
-void Polinom::InputPolynom()
+int Polinom::Input_n()
 {
 	cout << "n = ";
 	cin >> n;
-	koef = new int[n + 2]; // k0*x^n+k1*x^(n-1)+...+k(n-1)*x+kn - k = n+1 
+	return n;
+}
+
+void Polinom::Input_koef()
+{
+	koef = new double[n + 1]; 
 	for (int i = 0; i <= n; i++)
 	{
 		cout << "k" << i << " = ";
@@ -61,35 +62,30 @@ void Polinom::InputPolynom()
 	}
 }
 
-void Polinom::Print_koef()
+int Polinom::Output_koef(int i)
 {
-	int k;
-	cout << "¹ koef = ";
-	cin >> k;
-	for (int i = 0; i <= n; i++)
-		if (k == i)
-			cout << "koef = " << koef[i];
+	return koef[i];
 };
 
-void Polinom::Count()
+void Polinom::Calculate()
 {
+	int x;
 	cout << "x = ";
 	cin >> x;
 	int s = 0;
 	int tmp = n;
-	int p;
+	double p;
 
 	for (int i = 0; i <= n; i++)
 	{
-		p = 0;
-		p = koef[i] * x^tmp;
+		p = (x^n) *  koef[i];
 		s = s + p;
 		tmp--;
 	}
 
 };
 
-int Polinom::Print_n() 
+int Polinom::Output_n(int n)
 {
 	return n;
 }
@@ -98,5 +94,11 @@ int Polinom::Print_n()
 
 int main()
 {
+	int n;
+	
+	Polinom();
+	
+	
+	
 
 }
