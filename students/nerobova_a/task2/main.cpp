@@ -22,11 +22,15 @@ public:
 	};
 	Polinom(int _n, int *_koef)
 	{
-		int a=0;
-		for (int i = 0; i < _n; i++)
-			if (_koef[i]!=0)
+		n = 0;
+		for (int i = 0; i <= _n; i++)
+		{
+			if (_koef[i] != 0) n = i;
+			koef = new int[n + 2];
+			for (int i = 0; i <= n; i++)
+				koef[i] = _koef[i];
+		}
 
-		
 	};
 	Polinom(const Polinom &p);
 	Polinom::~Polinom();
