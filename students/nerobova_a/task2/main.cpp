@@ -10,13 +10,13 @@ class  Polinom
 	double *koef;
 public:
 	int GetDegree(int n);
-	double Get—oef();
+	double GetCoef(int i);
 	double Calculate(double x);
 	void Output();
 	void Derivative();
 
 	Polinom(): n(0), koef (0) {}
-	Polinom(int _n, double _koef[]): n(_n), koef (_koef)
+	Polinom(int _n, double _koef[]): n(_n)
 	{
 		koef = new double[_n + 1];
 		for (int i = 0; i <= _n; i++)
@@ -56,11 +56,9 @@ Polinom::~Polinom()
 }
 
 
-double Polinom::Get—oef()
+double Polinom::GetCoef(int i)
 {
-	int i = 0;
-	cout << "Input index coefficient ";
-	cin >> i;
+	
 	return koef[i];
 };
 
@@ -110,8 +108,9 @@ void Polinom::Derivative()
 		cout << " + " << p << "x^(" << n << ")";
 	}
 	cout << " + " << koef[tmp-1];
-		
 }
+
+
 
 int main()
 {
@@ -143,8 +142,11 @@ int main()
 		break;
 	}
 case 2:
-	{
-		cout << p.Get—oef();
+{	
+	int i = 0;
+	cout << "Input index coefficient ";
+	cin >> i;
+		cout << p.GetCoef(i);
 		break;
 	}
 	case 3:
@@ -157,7 +159,8 @@ case 2:
 	}
 	case 4:
 	{
-		p.Derivative();
+		Polinom p1 = p;
+		p1.Derivative();
 	}
 	system("pause");
 	}
