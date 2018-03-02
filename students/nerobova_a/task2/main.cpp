@@ -31,7 +31,7 @@ public:
 	{
 		if (this == &obj)
 			return *this;
-		if (koef != obj.koef) {
+		if (n != obj.n) {
 			delete[] koef;
 			koef = new double[n + 1];
 		}
