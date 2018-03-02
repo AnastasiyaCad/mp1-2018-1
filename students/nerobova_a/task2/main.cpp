@@ -9,14 +9,20 @@ class  Polinom
 	int n;
 	double *koef;
 public:
-	int Output_n(int n);
-	double Output_koef(int i); 
+	int GetDegree(int n);
+	double Get—oef();
 	double Calculate(double x);
 	void Output();
 	void Derivative();
 
 	Polinom(): n(0), koef (0) {}
-	Polinom(int _n, double _koef[]): n(_n), koef(_koef) {}
+	Polinom(int _n, double _koef[]): n(_n), koef (_koef)
+	{
+		koef = new double[_n + 1];
+		for (int i = 0; i <= _n; i++)
+			koef[i] = _koef[i];
+	}
+
 
 	Polinom(const Polinom &p);
 	~Polinom();
@@ -50,8 +56,11 @@ Polinom::~Polinom()
 }
 
 
-double Polinom::Output_koef(int i)
+double Polinom::Get—oef()
 {
+	int i = 0;
+	cout << "Input index coefficient ";
+	cin >> i;
 	return koef[i];
 };
 
@@ -71,7 +80,7 @@ double Polinom::Calculate(double x)
 };
 
 
-int Polinom::Output_n(int n)
+int Polinom::GetDegree(int n)
 {
 	return n;
 }
@@ -130,14 +139,12 @@ int main()
 	{
 	case 1:
 	{
-		cout << "Degree the polynomial = " << p.Output_n(n);
+		cout << "Degree the polynomial = " << p.GetDegree(n);
 		break;
 	}
 case 2:
 	{
-		cout << "Input index coefficient ";
-		cin >> i;
-		cout << "Coefficient = " << p.Output_koef(i);
+		cout << p.Get—oef();
 		break;
 	}
 	case 3:
@@ -151,7 +158,6 @@ case 2:
 	case 4:
 	{
 		p.Derivative();
-		break;
 	}
 	system("pause");
 	}
