@@ -13,16 +13,10 @@ public:
 	double Output_koef(int i); 
 	double Calculate(double x);
 	void Output();
-	void Proiz();
+	void Derivative();
 
-	Polinom() 
-	{
-		n = 0;
-		koef = new double[n + 1];
-		koef[0] = 0;
-	}
-
-	Polinom(int _n, double _koef[]) :n(_n), koef(_koef) {}
+	Polinom(): n(0), koef (0) {}
+	Polinom(int _n, double _koef[]): n(_n), koef(_koef) {}
 
 	Polinom(const Polinom &p);
 	~Polinom();
@@ -84,55 +78,81 @@ int Polinom::Output_n(int n)
 
 void Polinom::Output()
 {
-	cout << koef[0] << "(x^" << n << ")";
+	cout << koef[0] << "x^(" << n << ")";
 	for (int i = 1; i < n; i++)
 	{
-		cout << " + " << koef[i] << "(x^" << n - i << ")";
+		cout << " + " << koef[i] << "x^(" << n - i << ")";
 	}
 	cout << " + " << koef[n]<<"\n";
 }
 
-void Polinom::Proiz()
+void Polinom::Derivative()
 {
 	double p;
-	double s;
 	int tmp;
 	tmp = n;
 	p = n * koef[0];
 	n--;
 	cout << p << "x^(" << n << ")";
-	for (int i = 1; i <= n; i++)
+	for (int i = 1; i < tmp-1; i++)
 	{
 		p = n * koef[i];
 		n--;
-		//s = s + p;
-		cout << " + " << p << "x^" << n << ")";
+		cout << " + " << p << "x^(" << n << ")";
 	}
-	cout << " + " << koef[n-1];
+	cout << " + " << koef[tmp-1];
 		
 }
 
 int main()
 {
-	int n;
-	double x;
-	cout << "n = ";
-	cin >> n;
+	int n, i;
+	int c;
 	double koef[13];
-
+	double x;
+	cout << "Input degree the polynomialn:  n=  ";
+	cin >> n;
+	cout << "Input coefficients the polynomial: \n";
 	for (int i = 0; i <= n; i++)
-		{
-			cout << "k" << i << " = ";
-			cin >> koef[i];
-		}
-
+	{
+		cout << "k" << i << " = ";
+		cin >> koef[i];
+	}
 	Polinom p(n, koef);
 	p.Output();
-	cout << "x = ";
-	cin >> x;
-	cout << "\n";
-	cout << p.Calculate(x)<<"\n";
-	p.Proiz();
-	system("pause");
 
+	cout << "Output degree the polynomial- 1 \n";
+	cout << "Output index coefficient - 2 \n";
+	cout << "Calculate the polynomial value at a given x-point - 3 \n";
+	cout << "Derive the derivative of the polynomial - 4 \n";
+	cin >> c;
+	switch (c)
+	{
+	case 1:
+	{
+		cout << "Degree the polynomial = " << p.Output_n(n);
+		break;
+	}
+case 2:
+	{
+		cout << "Input index coefficient ";
+		cin >> i;
+		cout << "Coefficient = " << p.Output_koef(i);
+		break;
+	}
+	case 3:
+	{
+		cout << "Input x = ";
+		cin >> x;
+		cout << "\n";
+		cout << p.Calculate(x);
+		break;
+	}
+	case 4:
+	{
+		p.Derivative();
+		break;
+	}
+	system("pause");
+	}
 }
