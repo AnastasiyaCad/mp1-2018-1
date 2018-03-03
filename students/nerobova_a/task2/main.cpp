@@ -105,19 +105,6 @@ Polinom Polinom::Derivative()
 	}
 	Polinom P(tmp - 1, koef1);
 	return P;
-
-	/*Polinom der(*this);
-	double *koef1;
-	int tmp;
-	tmp = n;
-	koef1 = new double[n+1];
-	for (int i = 0; i < tmp; i++) {
-		koef1[i] = n * koef[i];
-		n--;
-	}
-	der.n = tmp-1;
-	der.koef = koef1;
-	return der;*/
 }
 
 
