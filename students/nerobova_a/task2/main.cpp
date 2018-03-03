@@ -13,7 +13,7 @@ public:
 	double GetCoef(int i);
 	double Calculate(double x);
 	void Output();
-	void Derivative();
+	Polinom Derivative();
 
 	Polinom(): n(0), koef (0) {}
 	Polinom(int _n, double _koef[]): n(_n)
@@ -93,21 +93,21 @@ void Polinom::Output()
 	cout << " + " << koef[n]<<"\n";
 }
 
-void Polinom::Derivative()
+Polinom Polinom::Derivative()
 {
-	double p;
+	Polinom der(*this);
+	double *koef1;
 	int tmp;
 	tmp = n;
-	p = n * koef[0];
-	n--;
-	cout << p << "x^(" << n << ")";
-	for (int i = 1; i < tmp-1; i++)
-	{
-		p = n * koef[i];
+	koef1 = new double[n+1];
+	for (int i = 0; i < tmp; i++) {
+		koef1[i] = n * koef[i];
 		n--;
-		cout << " + " << p << "x^(" << n << ")";
 	}
-	cout << " + " << koef[tmp-1];
+	der.n = tmp-1;
+	der.koef = koef1;
+	der.Output();
+	return der;
 }
 
 
@@ -159,17 +159,10 @@ case 2:
 	}
 	case 4:
 	{
-		double p;
-		double *koef1;
-		int tmp;
-		tmp = n;
-		koef1 = new double[n];
-		for (int i = 0; i < tmp; i++) {
-			koef1[i] = n * koef[i];
-			n--;
-		}
-		Polinom p1(tmp-1, koef1);
+		Polinom p1 = p;
+		p1.Derivative();
 		p1.Output();
+
 	}
 	system("pause");
 	}
