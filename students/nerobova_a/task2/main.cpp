@@ -3,7 +3,6 @@
 #include <stdio.h>
 using namespace std;
 
-
 class  Polinom
 {
 	int n;
@@ -13,6 +12,7 @@ public:
 	double GetCoef(int i);
 	double Calculate(double x);
 	void Output();
+	Polinom InputDegCoef();
 	Polinom Derivative();
 
 	Polinom(): n(0), koef (0) {}
@@ -22,8 +22,7 @@ public:
 		for (int i = 0; i <= _n; i++)
 			koef[i] = _koef[i];
 	}
-
-
+	
 	Polinom(const Polinom &p);
 	~Polinom();
 
@@ -107,11 +106,32 @@ Polinom Polinom::Derivative()
 	return P;
 }
 
+Polinom Polinom::InputDegCoef()
+{
+	int _n;
+	cin >> _n;
+	if (n != _n)
+	{
+		n = _n;
+		delete[] koef;
+		double k;
+		koef = new double[n + 1];
+		for (int i = 0; i <= n; i++)
+		{
+			cin >> k;
+			koef[i] = k;
+		}
+	}
+	Polinom P(n, koef);
+	return P;
+
+}
+
 
 
 int main()
 {
-	int n, i;
+	int n;
 	int c;
 	double koef[13];
 	double x;
@@ -130,6 +150,7 @@ int main()
 	cout << "Output index coefficient - 2 \n";
 	cout << "Calculate the polynomial value at a given x-point - 3 \n";
 	cout << "Derive the derivative of the polynomial - 4 \n";
+	cout << "To change the polynomial - 5 \n";
 	cin >> c;
 	switch (c)
 	{
@@ -159,6 +180,11 @@ case 2:
 		Polinom p1 = p.Derivative();
 		p1.Output();
 
+	}
+	case 5:
+	{
+		p.InputDegCoef();
+		p.Output();
 	}
 	system("pause");
 	}
