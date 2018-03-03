@@ -95,7 +95,18 @@ void Polinom::Output()
 
 Polinom Polinom::Derivative()
 {
-	Polinom der(*this);
+	double *koef1;
+	int tmp;
+	tmp = n;
+	koef1 = new double[n + 1];
+	for (int i = 0; i < tmp; i++) {
+		koef1[i] = n * koef[i];
+		n--;
+	}
+	Polinom P(tmp - 1, koef1);
+	return P;
+
+	/*Polinom der(*this);
 	double *koef1;
 	int tmp;
 	tmp = n;
@@ -106,8 +117,7 @@ Polinom Polinom::Derivative()
 	}
 	der.n = tmp-1;
 	der.koef = koef1;
-	der.Output();
-	return der;
+	return der;*/
 }
 
 
@@ -159,8 +169,7 @@ case 2:
 	}
 	case 4:
 	{
-		Polinom p1 = p;
-		p1.Derivative();
+		Polinom p1 = p.Derivative();
 		p1.Output();
 
 	}
