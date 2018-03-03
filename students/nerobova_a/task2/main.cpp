@@ -159,8 +159,17 @@ case 2:
 	}
 	case 4:
 	{
-		Polinom p1 = p;
-		p1.Derivative();
+		double p;
+		double *koef1;
+		int tmp;
+		tmp = n;
+		koef1 = new double[n];
+		for (int i = 0; i < tmp; i++) {
+			koef1[i] = n * koef[i];
+			n--;
+		}
+		Polinom p1(tmp-1, koef1);
+		p1.Output();
 	}
 	system("pause");
 	}
