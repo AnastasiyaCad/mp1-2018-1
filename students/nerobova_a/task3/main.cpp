@@ -21,7 +21,7 @@ public:
 	double PrintParameter_b(double b);
 	int NumSegments();
 
-	double Integral::Calculate(double x)
+	double Integral::Calculate(double x) // 0 -sin; 1- cos; 2 - exp;
 	{	
 		switch (FuncNum)
 		{
@@ -42,8 +42,25 @@ public:
 		}
 		}
 	}
-	
+
+	double Integral::Pryamoug(double a, double b, int n)
+	{
+		//double CalcIntegral(double a, double b, int n)
+		//{
+		int i;
+		double result, h;
+		result = 0;
+		h = (b - a) / n; //Шаг сетки
+		for (i = 0; i < n; i++)
+		{
+			result += Calculate(a + h * (i + 0.5)); //Вычисляем в средней точке и добавляем в сумму
+		}
+		result *= h;
+		return result;
+	}
 };
+
+
 
 double sin_reference(double x)
 {
@@ -127,43 +144,23 @@ double Integral::PrintParameter_b(double b)
 	return b;
 }
 
-int Integral::NumSegments()
+int Integral::NumSegments() // число отрезков метода
 {
 	int n;
 	cin >> n;
 	return n;
 }
 
-double Integral::Pryamoug(double a, double b, int n)
-{
-	//double CalcIntegral(double a, double b, int n)
-	//{
-		int i;
-		double result, h;
 
-		result = 0;
-
-		h = (b - a) / n; //Шаг сетки
-
-		for (i = 0; i < n; i++)
-		{
-			result += InFunction(a + h * (i + 0.5)); //Вычисляем в средней точке и добавляем в сумму
-		}
-
-		result *= h;
-
-		return result;
-}
-
-	int main(void)
+	/*int main(void)
 	{
 		double integral;
 
 		integral = CalcIntegral(0, 2, 500);
 		printf("The value of the integral is: %lf \n", integral);
 		return 0;
-	}
-}
+	}*/
+
 
 double InputX()
 {
@@ -181,12 +178,22 @@ double InFunction(double x)
 int main()
 {
 	int s;
-	cout << "Input (0 - sin, 1 - cos, 2 - e^x) \n";
+	cout << "1 - lev, 2 - prav, 3 - cred \n";
 	cin >> s;
 	switch (s)
 	{
 	case 1:
 	{
+
+	}
+	case 2:
+	{
+
+	}
+	case 3:
+	{
+
+		Integral(5.5, 10, 0);
 
 	}
 	}
