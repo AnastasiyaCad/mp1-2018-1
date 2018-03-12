@@ -14,43 +14,42 @@ class Integral
 	double CalculateSin(double x);
 public:
 	Integral() {}
-	Integral(int _a, int _b, int _c) : a(_a), b(_b), FuncNum(_c) {} // c- ot 0 do 2
-	double InputParameter_a();
-	double InputParameter_b();
+	Integral(double _a, double _b, int _c) : a(_a), b(_b), FuncNum(_c) {} // c- ot 0 do 2
+	//double InputParameter_a();
+	//double InputParameter_b();
 	double PrintParameter_a(double a);
 	double PrintParameter_b(double b);
-	int NumSegments();
+	double NumSegments();
+	Integral(const Integral &i);
 
-	double Integral::Calculate(double x) // 0 -sin; 1- cos; 2 - exp;
+	double Integral::Calculate(double x) //  FuncNum 0 -sin; 1- cos; 2 - exp;
 	{	
 		switch (FuncNum)
 		{
 		case 0:
 		{
-			CalculateSin(x);
+			return CalculateSin(x);
 			break;
 		}
 		case 1:
 		{
-			CalculateCos(x);
+			return CalculateCos(x);
 			break;
 		} 
 		case 2:
 		{
-			CalculateExp(x);
+			return CalculateExp(x);
 			break;
 		}
 		}
 	}
 
-	double Integral::Pryamoug(double a, double b, int n)
+	double Integral::Pryamoug(double a, double b, double n)
 	{
-		//double CalcIntegral(double a, double b, int n)
-		//{
 		int i;
 		double result, h;
 		result = 0;
-		h = (b - a) / n; //Шаг сетки
+		h = (b - a) / n; //Шаг сетки 
 		for (i = 0; i < n; i++)
 		{
 			result += Calculate(a + h * (i + 0.5)); //Вычисляем в средней точке и добавляем в сумму
@@ -58,9 +57,53 @@ public:
 		result *= h;
 		return result;
 	}
+
+	double Integral::PryamougPr(double a, double b, double n)
+	{
+		int i;
+		double result, h;
+		result = 0;
+		h = (b - a) / n; //Шаг сетки
+		for (i = 1; i <= n; i++)
+		{
+			result += Calculate(a + h * i); //Вычисляем в средней точке и добавляем в сумму
+		}
+		result *= h;
+		return result;
+		
+	}
+
+	double Integral::PryamougLev(double a, double b, double n)
+	{
+		int i;
+		double result, h;
+		result = 0;
+		h = (b - a) / n; //Шаг сетки
+		for (i = 0; i <= n-1; i++)
+		{
+			result += Calculate(a + h * i); //Вычисляем в средней точке и добавляем в сумму
+		}
+		result *= h;
+		return result;
+	}
+
+	Integral& operator=(const Integral &i)
+	{
+
+	}
 };
 
-
+Integral::Integral(const Integral &i)
+{
+	a = i.a;
+	b = i.b;
+	FuncNum = i.FuncNum;
+}
+/*
+Polinom::~Polinom() 
+{
+	delete[] koef;
+}*/
 
 double sin_reference(double x)
 {
@@ -74,7 +117,7 @@ double multsin(double x, int n)
 double Integral::CalculateSin(double x)
 {
 	double sum, last;
-	int n = 10; // можно также запросить у пользователя
+	double n = 10;
 	sum = x;
 	last = sum;
 	double current = 0.0;
@@ -104,7 +147,7 @@ double multcos(double x, int n)
 double Integral::CalculateCos(double x)
 {
 	double sum, last;
-	double n = 0.0;
+	double n = 10;
 	NumSegments(); 
 	sum = 1.0;
 	last = sum;
@@ -123,7 +166,38 @@ double Integral::CalculateCos(double x)
 	return sum;
 }
 
-double Integral::InputParameter_a() //введение прарметра а
+double exp_reference(double x)
+{
+	return exp(x);
+}
+double multexp(double x, int n)
+{
+	return x/n;
+}
+
+double Integral::CalculateExp(double x)
+{
+	double sum, last;
+	double n = 10;
+	NumSegments();
+	sum = 1.0; //
+	last = sum; //
+	double current = 0.0;
+	double val = exp_reference(x); 
+	double *errors;
+	errors = new double[n + 1];
+	errors[0] = fabs(sum - val);
+	for (int i = 1; i <= n; i++)
+	{
+		current = last * multexp(x, i);
+		sum = sum + current;
+		last = current;
+		errors[i] = fabs(sum - val);
+	}
+	return sum;
+}
+
+/*double Integral::InputParameter_a() //введение прарметра а
 {
 	cin >> a;
 	return a;
@@ -133,7 +207,7 @@ double Integral::InputParameter_b() // введение прарметра в
 {
 	cin >> b;
 	return b;
-}
+}*/
 
 double Integral::PrintParameter_a(double a) //узнать предел интегрирования
 {
@@ -144,23 +218,12 @@ double Integral::PrintParameter_b(double b)
 	return b;
 }
 
-int Integral::NumSegments() // число отрезков метода
+double Integral::NumSegments() // число отрезков метода
 {
-	int n;
+	double n;
 	cin >> n;
 	return n;
 }
-
-
-	/*int main(void)
-	{
-		double integral;
-
-		integral = CalcIntegral(0, 2, 500);
-		printf("The value of the integral is: %lf \n", integral);
-		return 0;
-	}*/
-
 
 double InputX()
 {
@@ -169,14 +232,25 @@ double InputX()
 	return x;
 }
 
-double InFunction(double x)
-{
-	return sin(x); 
-}
-
-
 int main()
 {
+	double a;
+	double b;
+	double n;
+	int FuncNum;
+	/*InputParameter_a();
+	InputParameter_b();*/
+	cout << "Input a \n";
+	cin >> a;
+	cout << "Input b \n";
+	cin >> b;
+	cout << "Input FuncNum: 0 -sin; 1- cos; 2 - exp \n";
+	cin >> FuncNum;
+	Integral i(a, b, FuncNum);
+
+	cout << "Input n"; 
+	cin >> n;
+
 	int s;
 	cout << "1 - lev, 2 - prav, 3 - cred \n";
 	cin >> s;
@@ -184,79 +258,19 @@ int main()
 	{
 	case 1:
 	{
-
+		cout << i.PryamougLev(a, b, n);
+		break;
 	}
 	case 2:
 	{
-
+		cout << i.PryamougPr(a, b, n);
+		break;
 	}
 	case 3:
 	{
-
-		Integral(5.5, 10, 0);
-
+		cout << i.Pryamoug(a, b, n);
+		break;
 	}
 	}
+	system("pause");
 }
-
-/*
-double mycos(double x,double eps)
-{
-double s,an;
-int n;
-n=0;
-an=1;
-s=0;
-while(fabs(an)>eps)
-{
-s+=an;
-n++;
-an*=-x*x/(2.*n-1.0)/(2.0*n);
-}
-return s;
-}
-double mysin(double x,double eps)
-{
-double s,an;
-int n;
-n=1;
-an=x;
-s=0;
-while(fabs(an)>eps)
-{
-s+=an;
-n++;
-an*=-x*x/(2.*n-1.0)/(2.0*n-2.0);
-}
-return s;
-}
-
-
-
-double CalcIntegral(double a, double b, int n)
-{
-	int i;
-	double result, h;
-
-	result = 0;
-
-	h = (b - a) / n; //Шаг сетки
-
-	for (i = 0; i < n; i++)
-	{
-		result += InFunction(a + h * (i + 0.5)); //Вычисляем в средней точке и добавляем в сумму
-	}
-
-	result *= h;
-
-	return result;
-}
-
-int main(void)
-{
-	double integral;
-
-	integral = CalcIntegral(0, 2, 500);
-	printf("The value of the integral is: %lf \n", integral);
-	return 0;
-}*/
