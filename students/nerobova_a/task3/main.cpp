@@ -11,40 +11,39 @@ class Integral
 	double CalculateExp(double x);
 	double CalculateCos(double x);
 	double CalculateSin(double x);
-	double NumSegments();
 public:
 	Integral() {}
 	Integral(double _a, double _b, int _c) : a(_a), b(_b), FuncNum(_c) {}
-	double OutputParameter_a(double a);
-	double OutputParameter_b(double b);
+	double GetLeftBound();
+	double GetRightBound();
 	
 	Integral(const Integral &i);
 	~Integral();
 
-	double Integral::Calculate(double x)
-	{	
-		switch (FuncNum)
-		{
-		case 0:
-		{
-			return CalculateSin(x);
-			break;
-		}
-		case 1:
-		{
-			return CalculateCos(x);
-			break;
-		} 
-		case 2:
-		{
-			return CalculateExp(x);
-			break;
-		}
-		}
-		return 0;
+	double Calculate(double x)
+	{
+	switch (FuncNum)
+	{
+	case 0:
+	{
+		return CalculateSin(x);
+		break;
+	}
+	case 1:
+	{
+		return CalculateCos(x);
+		break;
+	} 
+	case 2:
+	{
+		return CalculateExp(x);
+		break;
+	}
+	}
+	return 0;
 	}
 
-	double Integral::Rectangle(double a, double b, double n)
+	double Rectangle(double n)
 	{
 		int i;
 		double result, h;
@@ -58,7 +57,7 @@ public:
 		return result;
 	}
 
-	double Integral::RectangleRight(double a, double b, double n)
+	double RectangleRight(double n)
 	{
 		int i;
 		double result, h;
@@ -73,7 +72,7 @@ public:
 		
 	}
 
-	double Integral::RectangleLeft(double a, double b, double n)
+	double RectangleLeft(double n)
 	{
 		int i;
 		double result, h;
@@ -89,7 +88,10 @@ public:
 
 	Integral& operator=(const Integral &i)
 	{
-
+		a = i.a;
+		b = i.b;
+		FuncNum = i.FuncNum;
+		return *this;
 	}
 };
 
@@ -119,20 +121,13 @@ double Integral::CalculateExp(double x)
 	return exp(x);
 }
 
-double Integral::OutputParameter_a(double a) 
+double Integral::GetLeftBound()
 {
 	return a;
 }
-double Integral::OutputParameter_b(double b)
+double Integral::GetRightBound()
 {
 	return b;
-}
-
-double Integral::NumSegments()
-{
-	double n;
-	cin >> n;
-	return n;
 }
 
 int main()
@@ -159,23 +154,23 @@ int main()
 	{
 	case 1:
 	{
-		cout << i.RectangleLeft(a, b, n) << "\n";
+		cout << i.RectangleLeft(n) << "\n";
 		break;
 	}
 	case 2:
 	{
-		cout << i.RectangleRight(a, b, n) << "\n";
+		cout << i.RectangleRight(n) << "\n";
 		break;
 	}
 	case 3:
 	{
-		cout << i.Rectangle(a, b, n) << "\n";
+		cout << i.Rectangle(n) << "\n";
 		break;
 	}
 	}
 
-	cout << "Output the parameter a \n" << i.OutputParameter_a(a) << "\n";
-	cout << "Output the parameter b \n" << i.OutputParameter_b(b) << "\n";
+	cout << "Output the parameter a \n" << i.GetLeftBound() << "\n";
+	cout << "Output the parameter b \n" << i.GetRightBound() << "\n";
 	
 	system("pause");
 	return 0;
