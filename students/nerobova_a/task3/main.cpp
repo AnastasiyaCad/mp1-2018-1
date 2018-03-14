@@ -13,37 +13,40 @@ class Integral
 	double CalculateSin(double x);
 public:
 	Integral() {}
-	Integral(double _a, double _b, int _c) : a(_a), b(_b), FuncNum(_c) {}
+	Integral(double _a, double _b, int _FuncNum) : a(_a), b(_b), FuncNum(_FuncNum) {}
 	double GetLeftBound();
 	double GetRightBound();
-	
+	double InputFuncNum();
+	double InputLeftBound();
+	double InputRightBound();
+
 	Integral(const Integral &i);
 	~Integral();
 
 	double Calculate(double x)
 	{
-	switch (FuncNum)
-	{
-	case 0:
-	{
-		return CalculateSin(x);
-		break;
-	}
-	case 1:
-	{
-		return CalculateCos(x);
-		break;
-	} 
-	case 2:
-	{
-		return CalculateExp(x);
-		break;
-	}
-	}
-	return 0;
+		switch (FuncNum)
+		{
+		case 0:	
+		{
+			return CalculateSin(x);
+			break;
+		}
+		case 1:
+		{
+			return CalculateCos(x);
+			break;
+		} 
+		case 2:
+		{
+			return CalculateExp(x);
+			break;
+		}
+		}
+		return 0;
 	}
 
-	double Rectangle(double n)
+	double Rectangle(int n)
 	{
 		int i;
 		double result, h;
@@ -57,7 +60,7 @@ public:
 		return result;
 	}
 
-	double RectangleRight(double n)
+	double RectangleRight(int n)
 	{
 		int i;
 		double result, h;
@@ -72,7 +75,7 @@ public:
 		
 	}
 
-	double RectangleLeft(double n)
+	double RectangleLeft(int n)
 	{
 		int i;
 		double result, h;
@@ -129,49 +132,60 @@ double Integral::GetRightBound()
 {
 	return b;
 }
+double Integral::InputFuncNum()
+{
+	cin >> FuncNum;
+	return FuncNum;
+}
+
+double Integral::InputLeftBound()
+{
+	cin >> a;
+	return a;
+}
+double Integral::InputRightBound()
+{
+	cin >> b;
+	return b;
+}
 
 int main()
 {
-	double a;
-	double b;
-	double n;
-	int FuncNum;
+	int n;
+	Integral i2;
 	cout << "Input a \n";
-	cin >> a;
+	i2.InputLeftBound();
 	cout << "Input b \n";
-	cin >> b;
+	i2.InputRightBound();
 	cout << "Input FuncNum: 0 -sin; 1- cos; 2 - exp \n";
-	cin >> FuncNum;
-	Integral i(a, b, FuncNum);
-
-	cout << "Input n \n"; 
+	i2.InputFuncNum();
+	cout << "Input n \n";
 	cin >> n;
 
-	int s;
+	int s1;
 	cout << "1 - lev, 2 - prav, 3 - cred \n";
-	cin >> s;
-	switch (s)
+	cin >> s1;
+	switch (s1)
 	{
 	case 1:
 	{
-		cout << i.RectangleLeft(n) << "\n";
+		cout << i2.RectangleLeft(n) << "\n";
 		break;
 	}
 	case 2:
 	{
-		cout << i.RectangleRight(n) << "\n";
+		cout << i2.RectangleRight(n) << "\n";
 		break;
 	}
 	case 3:
 	{
-		cout << i.Rectangle(n) << "\n";
+		cout << i2.Rectangle(n) << "\n";
 		break;
 	}
+	return 0;
 	}
-
-	cout << "Output the parameter a \n" << i.GetLeftBound() << "\n";
-	cout << "Output the parameter b \n" << i.GetRightBound() << "\n";
-	
+	cout << "Output the parameter a \n" << i2.GetLeftBound() << "\n";
+	cout << "Output the parameter b \n" << i2.GetRightBound() << "\n";
 	system("pause");
 	return 0;
 }
