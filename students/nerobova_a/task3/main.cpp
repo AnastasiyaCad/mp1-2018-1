@@ -11,18 +11,6 @@ class Integral
 	double CalculateExp(double x);
 	double CalculateCos(double x);
 	double CalculateSin(double x);
-public:
-	Integral() {}
-	Integral(double _a, double _b, int _FuncNum) : a(_a), b(_b), FuncNum(_FuncNum) {}
-	double GetLeftBound();
-	double GetRightBound();
-	double InputFuncNum();
-	double InputLeftBound();
-	double InputRightBound();
-
-	Integral(const Integral &i);
-	~Integral();
-
 	double Calculate(double x)
 	{
 		switch (FuncNum)
@@ -45,6 +33,22 @@ public:
 		}
 		return 0;
 	}
+public:
+	Integral():a(0), b(0), FuncNum(0) {}
+	Integral(double _a, double _b, int _FuncNum) : a(_a), b(_b), FuncNum(_FuncNum) {}
+	double GetLeftBound();
+	double GetRightBound();
+	int InputFuncNum();
+	double InputLeftBound();
+	double InputRightBound();
+	void SetFuncNum(int _FuncNum);
+	void SetLeftBound(double _a);
+	void SetRightBound(double _b);
+
+	Integral(const Integral &i);
+	~Integral();
+
+	
 
 	double Rectangle(int n)
 	{
@@ -132,33 +136,61 @@ double Integral::GetRightBound()
 {
 	return b;
 }
-double Integral::InputFuncNum()
+
+void Integral::SetFuncNum(int _FuncNum)
 {
-	cin >> FuncNum;
+	FuncNum = _FuncNum;
+}
+
+int Integral::InputFuncNum()
+{
 	return FuncNum;
 }
 
+
 double Integral::InputLeftBound()
 {
-	cin >> a;
 	return a;
 }
+
+void Integral::SetLeftBound(double _a)
+{
+	a = _a;
+}
+
+
 double Integral::InputRightBound()
 {
-	cin >> b;
 	return b;
 }
+
+void Integral::SetRightBound(double _b)
+{
+	b = _b;
+}
+
 
 int main()
 {
 	int n;
+	
 	Integral i2;
 	cout << "Input a \n";
-	i2.InputLeftBound();
+
+	double a;
+	cin >> a;
+	i2.SetLeftBound(a);
 	cout << "Input b \n";
-	i2.InputRightBound();
+
+	double b;
+	cin >> b;
+	i2.SetRightBound(b);
+	int FuncNum;
+
 	cout << "Input FuncNum: 0 -sin; 1- cos; 2 - exp \n";
-	i2.InputFuncNum();
+	cin >> FuncNum;
+	i2.SetFuncNum(FuncNum);
+
 	cout << "Input n \n";
 	cin >> n;
 
