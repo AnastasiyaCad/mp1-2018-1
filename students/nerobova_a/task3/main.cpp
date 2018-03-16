@@ -38,9 +38,7 @@ public:
 	Integral(double _a, double _b, int _FuncNum) : a(_a), b(_b), FuncNum(_FuncNum) {}
 	double GetLeftBound();
 	double GetRightBound();
-	int InputFuncNum();
-	double InputLeftBound();
-	double InputRightBound();
+	int GetFuncNum();
 	void SetFuncNum(int _FuncNum);
 	void SetLeftBound(double _a);
 	void SetRightBound(double _b);
@@ -128,29 +126,14 @@ double Integral::CalculateExp(double x)
 	return exp(x);
 }
 
-double Integral::GetLeftBound()
-{
-	return a;
-}
-double Integral::GetRightBound()
-{
-	return b;
-}
-
 void Integral::SetFuncNum(int _FuncNum)
 {
 	FuncNum = _FuncNum;
 }
 
-int Integral::InputFuncNum()
+int Integral::GetFuncNum()
 {
 	return FuncNum;
-}
-
-
-double Integral::InputLeftBound()
-{
-	return a;
 }
 
 void Integral::SetLeftBound(double _a)
@@ -158,15 +141,19 @@ void Integral::SetLeftBound(double _a)
 	a = _a;
 }
 
-
-double Integral::InputRightBound()
+double Integral::GetLeftBound()
 {
-	return b;
+	return a;
 }
 
 void Integral::SetRightBound(double _b)
 {
 	b = _b;
+}
+
+double Integral::GetRightBound()
+{
+	return b;
 }
 
 
