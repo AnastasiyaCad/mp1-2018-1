@@ -348,7 +348,7 @@ double Thermometer::GetAverageDay(int month)
 ifstream Thermometer_out;
 ostream &operator<<(ostream& os, const Thermometer &th)
 {
-	os << th.d.num  << '.' << th.d.month << '.' << th.d.year << '.' << th.t.hour << '.' << th.degree;
+	os << th.d.num  << '.' << th.d.month << '.' << th.d.year << '-' << th.t.hour << '|' << th.degree;
 	return os;
 }*/
 
@@ -388,37 +388,46 @@ void main()
 	int hour;
 	int degree;
 
-	cout << "";
+	cout << "Vvedite daty: \n";
+	cout << "Vvedite year: \n";
+	cin >> year;
+	d.SetDateYear(year);
+	cout << "Vvedite month: \n";
+	cin >> month;
+	d.SetDateMonth(month);
+	cout << "Vvedite num: \n";
+	cin >> num;
+	d.SetDateNum(num);
+	cout << "Vvedite time: \n";
+	cin >> hour;
+	t.SetDateHour(hour);
+	cout << "Vvedite degree: \n";
+	cin >> degree;
+	Thermometer tr(d, t);
+	tr.SetDegree(d, t, degree);
+	cout << "\n";
+	cout << "Enter 1 : Initial date and time of observations: \n";
+	cout << "Enter 2 : If you want to know the temperature in the selected observation \n";
+	cout << "Enter 3 : If you want to set a series of observations for the selected date \n";
+	cout << "Enter 4 : If you want to find the average temperature for the selected date \n";
+	cout << "Enter 5 : if you want to find the average temperature for the selected month \n";
+	cout << "Enter 6 : If you want to find the average temperature for the whole history of observations \n";
+	cout << "Enter 7 : If you want to find the average daily temperature \n";
+	cout << "Enter 8 : If you want to find the average night temperature \n";
+	cout << "Enter 9 : If you want to save the observation history to a file \n";
+	cout << "Enter 10 : If you want to read the observation history from a file \n";
 	cin >> g;
-	
+
 	switch (g)
 	{
 	case 1:
 	{
-		cout << "Vvedite daty: \n";
-		cout << "Vvedite year: \n";
-		cin >> year;
-		d.SetDateYear(year);
-		cout << "Vvedite month: \n";
-		cin >> month;
-		d.SetDateMonth(month);
-		cout << "Vvedite num: \n";
-		cin >> num;
-		d.SetDateNum(num);
-		cout << "Vvedite time: \n";
-		cin >> hour;
-		t.SetDateHour(hour);
-		cout << "Vvedite degree: \n";
-		cin >> degree;
-		Thermometer tr(d, t);
-		tr.SetDegree(d, t, degree);
-		cout << "\n";
-		break;
-	
 		cout << tr.GetNum(d) << "." << tr.GetMonth(d) << "." << tr.GetYear(d) << "\n";
 		cout << tr.GetHour(t) << ".00 \n";
-
-		cout << "";
+		break;
+	}
+	case 2:
+	{
 		cout << "Vvedite daty: \n";
 		cout << "Vvedite year: \n";
 		cin >> year;
@@ -433,7 +442,9 @@ void main()
 		cin >> hour;
 		t.SetDateHour(hour);
 		cout << tr.GetDegree(d, t);
-		// 5
+	}
+	case 3:
+	{	// 5
 		cout << "Vvedite daty: \n";
 		cout << "Vvedite year: \n";
 		cin >> year;
@@ -450,14 +461,53 @@ void main()
 			tr.SetSeveralDegree(d, degree);
 		}
 		cout << "\n";
-		int k;
-		k = tr.Test();
-		/*//Thermometer_in.open("C:\Games\Temp.txt");
-		tr.SaveToFile(k);
-		Thermometer_in.close();*/
+	}
+	case 4:
+	{
+		cout << "Vvedite daty: \n";
+		cout << "Vvedite year: \n";
+		cin >> year;
+		d.SetDateYear(year);
+		cout << "Vvedite month: \n";
+		cin >> month;
+		d.SetDateMonth(month);
+		cout << "Vvedite num: \n";
+		cin >> num;
+		d.SetDateNum(num);
+		cout << tr.GetAverageDate(d);
+	}
+	case 5:
+	{
+		cout << "Vvedite month: \n";
+		cin >> month;
+		cout << tr.GetAverageMonth(month);
+	}
+	case 6:
+	{
+		cout << tr.GetAverage();
+	}
+	case 7:
+	{
+		cout << "Vvedite month: \n";
+		cin >> month;
+		cout << tr.GetAverageDay(month);
+	}
+	case 8:
+	{
+		cout << "Vvedite month: \n";
+		cin >> month;
+		cout << tr.GetAverageNight(month);
+	}
+	case 9:
+	{
+		tr.SaveToFile();
+	}
+	case 10:
+	{
+		tr.ConsiderFromFile();
 	}
 	}
-	system("pause");
+system("pause");
 }
 
 	
