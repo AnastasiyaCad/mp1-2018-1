@@ -155,10 +155,11 @@ public:
 	double GetAverageDate(Date _d); //средн€€ за день
 	double GetAverageNight(int month); // средн€€ ночна€
 	double GetAverageDay(int month); // средн€€ дневна€
-	void SaveToFile(int k);
+	void SaveToFile();
 	int Test();
 	Date GetD();
 	Time GetT();
+	void ConsiderFromFile();
 };
 
 
@@ -181,7 +182,7 @@ Thermometer::Thermometer(const Thermometer &th)
 
 Thermometer::~Thermometer()
 {
-	
+		values.erase(values.begin(), values.begin()+ values.size());
 }
 
 int Thermometer::GetMonth(Date _d)
@@ -343,23 +344,40 @@ double Thermometer::GetAverageDay(int month)
 	return k;
 }
 
-ofstream Thermometer_in;
+/*ofstream Thermometer_in;
 ifstream Thermometer_out;
 ostream &operator<<(ostream& os, const Thermometer &th)
 {
 	os << th.d.num  << '.' << th.d.month << '.' << th.d.year << '.' << th.t.hour << '.' << th.degree;
 	return os;
-}
+}*/
 
-void Thermometer::SaveToFile(int k)
+void Thermometer::SaveToFile()
 {
-	Thermometer_in << "Degree Counts: " << k << endl;
+	/*Thermometer_in << "Degree Counts: " << k << endl;
 	for (int i = 0; i < k; i++)
 		for (int j = 0; j < 24; j++)
 		{
-			Thermometer_in <<  << endl << endl << values[i][j] << endl << endl;
-		}
+			Thermometer_in << d.num << endl << d.month << endl << d.year << endl << t.hour << endl << values[i][j];
+		}*/
+	ofstream file("Temp.txt");
+	for (int i = 0; i = 365; i++)
+	{
+		for (int j = 0; j < 24; j++)
+			file << values[i][j];
+		file << "\n";
+	}
 }
+
+void Thermometer::ConsiderFromFile()
+{
+	ifstream file("Temp.txt");
+	for (int i = 0; i = 365; i++)
+		for (int j = 0; j < 24; j++)
+			file >> values[i][j];
+	file.close();
+}
+
 
 void main()
 {
@@ -434,9 +452,9 @@ void main()
 		cout << "\n";
 		int k;
 		k = tr.Test();
-		Thermometer_in.open("C:\Games\Temp.txt");
+		/*//Thermometer_in.open("C:\Games\Temp.txt");
 		tr.SaveToFile(k);
-		Thermometer_in.close();
+		Thermometer_in.close();*/
 	}
 	}
 	system("pause");
