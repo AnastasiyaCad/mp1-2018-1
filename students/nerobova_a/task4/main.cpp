@@ -109,40 +109,21 @@ Time::~Time()
 
 class Thermometer
 {
-	double degree;
+	int degree;
 	double *degreeMas;
 	Date d;
 	Time t;
 	vector<vector<int>> values;
-public://values.size()
+public:
 	Thermometer():degree(0){} 
+
 	Thermometer(Date _d, Time _t) : d(_d), t(_t)
 	{
 		values.resize(365);
 		for (int i = 0; i < values.size(); i++)
 			values[i].resize(24);
 	}
-	Thermometer(Date _d, Time _t, double _degree) :degree(_degree), d(_d), t(_t)
-	{
-		values.resize(365);
-		for (int i = 0; i < 365; i++)
-			values[i].resize(24);
-		values[SetN(_d)][_t.GetDateHour()] = _degree;
-	}
-
-	/*Thermometer(Date _d, Time _t, double _degreeMas[]) : d(_d), t(_t)
-	{
-		values.resize(365);
-		for (int i = 0; i < 365; i++)
-			values[i].resize(24);
-		for (int i = SetN(_d); i < 365; i++)
-		{
-			for (int j = GetHour(_t); j < 24; j++)
-				for (int k = 0; k < 365; k ++)
-					values[i][j] = _degreeMas[k];
-		}
-	}*/
-
+	
 	Thermometer(const Thermometer &th);
 	~Thermometer();
 
@@ -153,32 +134,22 @@ public://values.size()
 		degree = th.degree;
 		return *this;
 	}
-	Date GetStartDate();
-	Time GetStartTime();
 	int GetDateDegree();
 	void SetDateDegree(int _degree);
-	void PrintThermometer();
-	int SetMonth(Date _d);
-	int SetNum(Date _d);
-	int SetN(Date _d);
-	int SetNum1(Date _d);
-	int SetYear(Date _d);
+	int GetMonth(Date _d);
+	int GetNum(Date _d);
+	int GetN(Date _d);
+	int GetNum1(Date _d);
+	int GetYear(Date _d);
 	int GetHour(Time _t);
 	friend Date;
 	friend Time;
-	void PrintDate(Date d);
-	void PrintTime(Time _t);
-	void SetDegree(Date _d, Time _t);
+	void SetDegree(Date _d, Time _t, int _degree);
+	void SetSeveralDegree(Date _d, int _degree);
+	int GetDegree(Date _d, Time _t);
+	double GetAverage(Date _d);
+	int GetCase(int _month);
 };
-
-Date Thermometer::GetStartDate()
-{
-	return d;
-}
-Time Thermometer::GetStartTime()
-{
-	return t;
-}
 
 void Thermometer::SetDateDegree(int _degree)
 {
@@ -191,6 +162,8 @@ int Thermometer::GetDateDegree()
 
 Thermometer::Thermometer(const Thermometer &th)
 {
+	d = th.d;
+	t = th.t;
 	degree = th.degree;
 }
 Thermometer::~Thermometer()
@@ -198,15 +171,15 @@ Thermometer::~Thermometer()
 
 }
 
-int Thermometer::SetMonth(Date _d)
+int Thermometer::GetMonth(Date _d)
 {
 	return _d.GetDateMonth();
 }
-int Thermometer::SetNum(Date _d)
+int Thermometer::GetNum(Date _d)
 {
 	return _d.GetDateNum();
 }
-int Thermometer::SetYear(Date _d)
+int Thermometer::GetYear(Date _d)
 {
 	return _d.GetDateYear();
 }
@@ -214,10 +187,9 @@ int Thermometer::GetHour(Time _t)
 {
 	return _t.GetDateHour();
 }
-
-int Thermometer::SetNum1(Date _d)
+int Thermometer::GetNum1(Date _d)
 {
-	switch (SetMonth(_d))
+	switch (GetMonth(_d))
 	{
 	case 1: { return 0; }
 	case 2: { return 31; }
@@ -231,76 +203,153 @@ int Thermometer::SetNum1(Date _d)
 	case 10: { return 274; }
 	case 11: { return 305; }
 	case 12: { return 335; }
+	return 0;
+	}
+	return 0;
+}
+int Thermometer::GetCase(int _month)
+{
+	switch(_month)
+	{
+	case 1: { return 0; }
+	case 2: { return 31; }
+	case 3: { return 60; }
+	case 4: { return 91; }
+	case 5: { return 121; }
+	case 6: { return 152; }
+	case 7: { return 182; }
+	case 8: { return 213; }
+	case 9: { return 244; }
+	case 10: { return 274; }
+	case 11: { return 305; }
+	case 12: { return 335; }
+			 return 0;
 	}
 }
 // число €чейки
-int Thermometer::SetN(Date _d) 
+int Thermometer::GetN(Date _d) 
 {
 	int Num;
-	Num = SetNum(_d) + SetNum1(_d);
+	Num = GetNum(_d) + GetNum1(_d);
 	return Num;
 } 
 
-void Thermometer::PrintDate(Date _d)
+void Thermometer::SetDegree(Date _d, Time _t, int _degree) // 3
 {
-	cout << SetNum(_d) << "." << SetMonth(_d) << "." << SetYear(_d) << "\n";
+	values[GetN(_d)][_t.GetDateHour()] = _degree;
 }
-void Thermometer::PrintTime(Time _t)
+
+int Thermometer::GetDegree(Date _d, Time _t) // 4
 {
-	cout << GetHour(_t) << ".00 \n";
+	return values[GetN(_d)][_t.GetDateHour()];
 }
-void Thermometer::PrintThermometer()
+
+void Thermometer::SetSeveralDegree(Date _d, int _degree) // 5
 {
-	cout << degree << "C \n";
+	for (int i = 0; i < 24; i++)
+	{
+		values[GetN(_d)][i] = _degree;
+	}
 }
+
+double Thermometer::GetAverage(Date _d)
+{
+	//1
+	int k = 0;
+	for (int i = 0; i < 24; i++)
+		k = k + values[GetN(_d)][i];
+	k = k / 24;
+	return k;
+	//2
+	for (int i = GetCase(GetMonth(_d)); i < GetCase(GetMonth(_d)+1); i++)
+		for(int j = 0; j < 24; j++)
+		k = k + values[i][j];
+	k = k / (GetCase(GetMonth(_d) + 1) - GetCase(GetMonth(_d)));
+	return k;
+	//3
+	for (int i = 0; i < values.size(); i++)
+		for (int j = 0; j < 24; j++)
+		{
+			k = k + values[i][j];
+		}
+	k = k / 365;
+}
+
 void main()
 {
+	int g;
 	Date d(2000, 1, 1);
 	Time t(0);
-	//Thermometer tr(d, t, );
-	//tr.SetDateDegree(degree);
-	//tr.PrintThermometer();
-	//tr.InputTherm(d, t);*/
-
 	int num, month, year;
 	int hour;
-	double degree;
-	cout << "Vvedite daty: \n";
-	cout << "Vvedite year: \n";
-	cin >> year;
-	d.SetDateYear(year);
-	cout << "Vvedite month: \n";
-	cin >> month;
-	d.SetDateMonth(month);
-	cout << "Vvedite num: \n";
-	cin >> num;
-	d.SetDateNum(num);
-	cout << "Vvedite time: \n";
-	cin >> hour;
-	t.SetDateHour(hour);
+	int degree;
 
-	Thermometer tr(d, t);
-
-	double tr;
-	for (int i = SetN(d); i < 365; i++)
-	{
-		cout <<
-			for (int j = GetHour(t); j < 24; j++)
-			{
-				cin >> tr;
-				values[i][j] = tr;
-			}
-	}
-	cout << "Vvedite temperatury: \n";
-	tr.SetDegree(d, t);
+	cout << "";
+	cin >> g;
 	
-	/*Thermometer tr(d, t, degree);
-	tr.PrintDate(d);
-	tr.PrintTime(t);
-	tr.PrintThermometer();*/
+	switch (g)
+	{
+	case 1:
+	{
+		cout << "Vvedite daty: \n";
+		cout << "Vvedite year: \n";
+		cin >> year;
+		d.SetDateYear(year);
+		cout << "Vvedite month: \n";
+		cin >> month;
+		d.SetDateMonth(month);
+		cout << "Vvedite num: \n";
+		cin >> num;
+		d.SetDateNum(num);
+		cout << "Vvedite time: \n";
+		cin >> hour;
+		t.SetDateHour(hour);
+		cout << "Vvedite degree: \n";
+		cin >> degree;
+		Thermometer tr(d, t);
+		tr.SetDegree(d, t, degree);
+		cout << "\n";
+		break;
+	
+		cout << tr.GetNum(d) << "." << tr.GetMonth(d) << "." << tr.GetYear(d) << "\n";
+		cout << tr.GetHour(t) << ".00 \n";
 
-
-	cout << "\n";
+		cout << "";
+		cout << "Vvedite daty: \n";
+		cout << "Vvedite year: \n";
+		cin >> year;
+		d.SetDateYear(year);
+		cout << "Vvedite month: \n";
+		cin >> month;
+		d.SetDateMonth(month);
+		cout << "Vvedite num: \n";
+		cin >> num;
+		d.SetDateNum(num);
+		cout << "Vvedite time: \n";
+		cin >> hour;
+		t.SetDateHour(hour);
+		cout << tr.GetDegree(d, t);
+		// 5
+		cout << "Vvedite daty: \n";
+		cout << "Vvedite year: \n";
+		cin >> year;
+		d.SetDateYear(year);
+		cout << "Vvedite month: \n";
+		cin >> month;
+		d.SetDateMonth(month);
+		cout << "Vvedite num: \n";
+		cin >> num;
+		d.SetDateNum(num);
+		for (int i = 0; i < 24; i++) {
+			cout << "Vvedite degree: \n";
+			cin >> degree;
+			tr.SetSeveralDegree(d, degree);
+		}
+		
+		
+		cout << "\n";
+	}
+	}
 	system("pause");
 }
 
