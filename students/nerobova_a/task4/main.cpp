@@ -378,7 +378,6 @@ void Thermometer::ConsiderFromFile()
 	file.close();
 }
 
-
 void main()
 {
 	int g;
