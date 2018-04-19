@@ -42,7 +42,7 @@ public:
 	friend Person;
 	friend ATM;
 	void GetPerson();
-	void OutputFile();
+	int OutputFile();
 	void SetCount(const int i, string _CardNumber, string _PinCode, string _FullName, int _Score, int _StatusCart);
 };
 
@@ -63,18 +63,18 @@ ostream &operator<<(ostream& os, const Person &_pr)
 	return os;
 }
 	
-void ProcessingCenter::OutputFile()
+int ProcessingCenter::OutputFile()
 {
 	char per[100];
-	int size = 7;
+	int size;
 	ifstream file("Temp.txt");
 	if (!file.is_open())
 		cout << "The file can not be opened!\n"; 
 	else
-		/*Person_out.getline(per, 1, '\n');
-		size = atoi(per);*/	
 	{
-		for (int i = 1; i <= size; i++)
+		Person_out.getline(per, 1, '\n');
+		size = atoi(per);
+		for (int i = 0; i < size; i++)
 		{
 			Person_out.getline(per, 4, '.');
 			person.CardNumber = per;
@@ -89,8 +89,9 @@ void ProcessingCenter::OutputFile()
 			person_v.push_back(person);
 		}
 		file.close();
+		return size;
 	}
-
+	return 0;
 }
 
 void ProcessingCenter::GetPerson()
@@ -123,15 +124,16 @@ public:
 //проверяем есть ли карта с таким номером
 int ATM::AcceptCardClient(int size, string _CardNumber) // print your card adopted
 {
+	int tmp = 0;
 	for (int i = 0; i < size; i++)
 	{
 		if (pr.person_v[i].CardNumber == _CardNumber)
 		{
-			return 1;
+			tmp = 1;
 			break;
 		}
 	}
-	return 0;
+	return tmp;
 }
 //находим карту клиента
 int ATM::FindCartClient(int size, string _CardNumber)
@@ -144,6 +146,7 @@ int ATM::FindCartClient(int size, string _CardNumber)
 			break;
 		}		
 	}
+
 }
 
 string ATM::ReturnFullName(int i)
@@ -153,10 +156,12 @@ string ATM::ReturnFullName(int i)
 
 int ATM::FindCardClient2(int i, string _PinCode)
 {
+	int tmp = 0;
 	if (pr.person_v[i].PinCode == _PinCode)
-		return 1;
-	else
-		return 0;
+	{
+		tmp = 1;
+	}
+	return tmp;
 }
 
 void ATM::ChangeStatusCard(int i)
@@ -199,19 +204,26 @@ void main()
 	string FullName;
 	int Score;
 	int StatusCart;
-	int size = 6;
-	Pr.OutputFile();
+	int size;
+	size = Pr.OutputFile();
 	cout << "Enter the card: \n";
 	getline(cin, CardNumber);
-	while (ATM.AcceptCardClient(size, CardNumber) != 1)
+	if (ATM.AcceptCardClient(size, CardNumber) != 1)
 	{
 		cout << "Your card is not accepted!\n";
 		cout << "Enter the card: \n";
 		getline(cin, CardNumber);
+		while (ATM.AcceptCardClient(size, CardNumber) != 1)
+		{
+			cout << "Your card is not accepted!\n";
+			cout << "Enter the card: \n";
+			getline(cin, CardNumber);
+		}
 	}
+	
 	cout << "Your card has been accepted.\n";
 	ATM.FindCartClient(size, CardNumber);
-	
+
 	int tmp = 0;
 	for (int k = 0; k = 2; k++)
 	{
