@@ -66,8 +66,8 @@ public:
 	int CashTransferToAccount(int i, int _Case100, int _Case200, int _Case500, int _Case1000, int _Case2000, int _Case5000);
 	int WithdrawCashFromTheAccount(int i, int _Case100, int _Case200, int _Case500, int _Case1000, int _Case2000, int _Case5000);
 };
-//проверяем есть ли карта с таким номером
-int ATM::AcceptCardClient(int size, string _CardNumber) // print your card adopted
+
+int ATM::AcceptCardClient(int size, string _CardNumber)
 {
 	int tmp = 0;
 	for (int i = 0; i < size; i++)
@@ -110,30 +110,6 @@ int ATM::FindCardClient2(int i, string _PinCode)
 	return tmp;
 }
 
-/*int ATM::(int i, string _PinCode)
-{
-	for (int k = 0; k < 2; k++)
-	{
-		if (ATM.FindCardClient2(i, _PinCode) == 1)
-		{
-			cout << "Your card adopted!";
-			end2 = 0;
-			break;
-		}
-		else
-		{
-			cout << "The password is incorrect!\n";
-			tmp++;
-		}
-	}
-	if (tmp >= 3)
-	{
-		cout << "Your card is locked! \n";
-		ATM.ChangeStatusCard(i);
-		break;
-	}
-}*/
-
 void ATM::ChangeStatusCard(int i)
 {
 	pr.person_v[i].StatusCart = 0;
@@ -153,17 +129,17 @@ int ATM::WithdrawCashFromTheAccount(int i, int _Case100, int _Case200, int _Case
 {
 	int tmp = -1;
 	int p;
-	if ((Case100 >= _Case100) && (Case200 >= _Case200) && (Case500 = _Case500) && (Case1000 = _Case1000) && (Case2000 = _Case2000) && (Case5000 = _Case5000))
+	if ((Case100 >= _Case100) && (Case200 >= _Case200) && (Case500 >= _Case500) && (Case1000 >= _Case1000) && (Case2000 >= _Case2000) && (Case5000 >= _Case5000))
 	{
-		Case100 = Case100 - _Case100;
-		Case200 = Case200 - _Case200;
-		Case500 = Case500 - _Case500;
-		Case1000 = Case1000 - _Case1000;
-		Case2000 = Case2000 - _Case2000;
-		Case5000 = Case5000 - _Case5000;
 		p = 100 * _Case100 + 200 * _Case200 + 500 * _Case500 + 1000 * _Case1000 + 2000 * _Case2000 + 5000 * _Case5000;
-		if (p <= pr.person_v[i].Score)
+		if (pr.person_v[i].Score >= p)
 		{
+			Case100 = Case100 - _Case100;
+			Case200 = Case200 - _Case200;
+			Case500 = Case500 - _Case500;
+			Case1000 = Case1000 - _Case1000;
+			Case2000 = Case2000 - _Case2000;
+			Case5000 = Case5000 - _Case5000;
 			pr.person_v[i].Score = pr.person_v[i].Score - p;
 			tmp = p;
 		}
@@ -182,21 +158,14 @@ int ATM::CashTransferToAccount(int i, int _Case100, int _Case200, int _Case500, 
 	if (((2000000 - Case100) >= _Case100) && ((2000000 - Case200) >= _Case200) && ((2000000 - Case500) >= _Case500) && ((2000000 - Case1000) >= _Case1000) && ((2000000 - Case2000) >= _Case2000) && ((2000000 - Case5000) >= _Case5000))
 	{
 		p = 100 * _Case100 + 200 * _Case200 + 500 * _Case500 + 1000 * _Case1000 + 2000 * _Case2000 + 5000 * _Case5000;
-		if (p <= pr.person_v[i].Score)
-		{
-			pr.person_v[i].Score = pr.person_v[i].Score + p;
-			Case100 = Case100 + _Case100;
-			Case200 = Case200 + _Case200;
-			Case500 = Case500 + _Case500;
-			Case1000 = Case1000 + _Case1000;
-			Case2000 = Case2000 + _Case2000;
-			Case5000 = Case5000 + _Case5000;
-			tmp = 1;
-		}
-		else
-		{
-			tmp = 0;
-		}
+		pr.person_v[i].Score = pr.person_v[i].Score + p;
+		Case100 = Case100 + _Case100;
+		Case200 = Case200 + _Case200;
+		Case500 = Case500 + _Case500;
+		Case1000 = Case1000 + _Case1000;
+		Case2000 = Case2000 + _Case2000;
+		Case5000 = Case5000 + _Case5000;
+		tmp = p;
 	}
 	return tmp;
 }
@@ -242,7 +211,6 @@ void main()
 	int StatusCart;
 	int size;
 	size = ATM.OutputFile();
-	cout << size << "\n";
 	int end = 1;
 	int end2 = 1;
 	int tmp = 0;
@@ -263,28 +231,25 @@ void main()
 			{
 				cout << "Your card is not accepted!\n";
 				cout << "Enter the card: \n";
-				//getline(cin, CardNumber);
 				cin >> CardNumber;
 			}
 		}
 		end2 = 1;
-		// проверяем статус карты
 		i = ATM.FindCartClient(size, CardNumber);
 		if (ATM.ReturnCardStatus(i) == 0)
 		{
 			cout << "The operation was not performed. Your card is locked! \n";
 			break;
 		}
-		cout << "Your card has been accepted.\n";
 		while (end2 == 1)
 		{
-			for (int k = 0; k < 2; k++)
+			for (int k = 0; k < 3; k++)
 			{
 				cout << "Enter password: \n";
-				getline(cin, PinCode);
+				cin >> PinCode;
 				if (ATM.FindCardClient2(i, PinCode) == 1)
 				{
-					cout << "Your card adopted!";
+					cout << "Your card adopted! \n";
 					end2 = 0;
 					break;
 				}
@@ -300,7 +265,7 @@ void main()
 				ATM.ChangeStatusCard(i);
 				break;
 			}
-
+			cout << "Your card has been accepted, " << ATM.ReturnFullName(i) << "\n";
 			int a;
 			cout << "Customer account balance - 1\n";
 			cout << "Withdraw money from the account - 2\n";
@@ -311,11 +276,13 @@ void main()
 			{
 			case 1:
 			{
-				cout << ATM.CustomerAccountBalance(i);
+				cout << ATM.CustomerAccountBalance(i) << "\n";
+				end2 = 1;
 				break;
 			}
 			case 2:
 			{
+				int p;
 				int _case100;
 				int _case200;
 				int _case500;
@@ -334,11 +301,30 @@ void main()
 				cin >> _case2000;
 				cout << "Enter 5000: ";
 				cin >> _case5000;
-				ATM.WithdrawCashFromTheAccount(i, _case100, _case200, _case500, _case1000, _case2000, _case5000);
+				p = ATM.WithdrawCashFromTheAccount(i, _case100, _case200, _case500, _case1000, _case2000, _case5000);
+				if (p > 0)
+				{
+					cout << "Amount of money: \n" << p << "\n";
+					cout << ATM.CustomerAccountBalance(i) << "\n";
+					cout << "\n";
+				}
+				else
+				{
+					if (p = 0)
+					{
+						cout << "Sorry. Insufficient funds on the account! ";
+					}
+					else
+					{
+						cout << "Sorry. The operation is currently unavailable!";
+					}
+				}
+				end2 = 1;
 				break;
 			}
 			case 3:
 			{
+				int p;
 				int _case100;
 				int _case200;
 				int _case500;
@@ -357,6 +343,18 @@ void main()
 				cin >> _case2000;
 				cout << "Enter 5000: ";
 				cin >> _case5000;
+				p = ATM.CashTransferToAccount(i, _case100, _case200, _case500, _case1000, _case2000, _case5000);
+				if (p > 0)
+				{
+					cout << "Amount of money: \n" << p <<"\n";
+					cout << ATM.CustomerAccountBalance(i) << "\n";
+					cout << "\n";
+				}
+				else
+				{
+					cout << "Sorry. The operation is currently unavailable! \n";
+				}
+				end2 = 1;
 				break;
 			}
 			case 4:
