@@ -219,34 +219,33 @@ public:
 		return vCoordCom[x][y];
 	}
 
-	vector<int>ReturnShip(int x, int y) /////
+	int ReturnShipY(int x, int y) /////
 	{
-		vector<int>v;
-		v.resize(2);
-		int size = -1;
+		int tmpx = 0;
+		int tmpy = 0;
 		for (int i = 0; i < 10; i++)
-			for (int j = 0; j < 4; j++) {
+			for (int j = 0; j < vCoordCom[i].size(); j++) {
 				if ((vCoordCom[i][j] == x) && (vCoordCom[i][j + 1] == y))
 				{
-					v[0] = i; // вернуть размер и место x
-					v[1] = j;
+					tmpy = j; 
+					break;// вернуть размер и место x
 				}
 			}
-		return v;
+		return tmpy;
 	}
 
 	int ReturnShip1(int x, int y) /////
 	{
-		int tmp;
-		int size = -1;
+		int tmpx = 0;
 		for (int i = 0; i < 10; i++)
-			for (int j = 0; j < 4; j++) {
+			for (int j = 0; j < vCoordCom[i].size(); j++) {
 				if ((vCoordCom[i][j] == x) && (vCoordCom[i][j + 1] == y))
 				{
-					tmp = i; // вернуть размер и место x
+					tmpx = i; // вернуть размер и место x
 				}
+				break;
 			}
-		return tmp;
+		return tmpx;
 	}
 
 	void ExShip(int i, int j)
@@ -523,9 +522,8 @@ public:
 	{
 		vector<int>v;
 		v.resize(2);
-		int size = -1;
 		for (int i = 0; i < 10; i++)
-			for (int j = 0; j < 4; j++) {
+			for (int j = 0; j < vCoordUs[i].size(); j++) {
 				if ((vCoordUs[i][j] == x) && (vCoordUs[i][j + 1] == y))
 				{
 					v[0] = i; // вернуть размер и место x
@@ -533,6 +531,35 @@ public:
 				}
 			}
 		return v;
+	}
+
+	int ReturnShipX(int x, int y) /////
+	{
+		int tmpx = 0;
+		int tmpy = 0;
+		for (int i = 0; i < 10; i++)
+			for (int j = 0; j < vCoordUs[i].size(); j++) {
+				if ((vCoordUs[i][j] == x) && (vCoordUs[i][j + 1] == y))
+				{
+					tmpx = i; // вернуть размер и место x
+				}
+			}
+		return tmpx;
+	}
+
+	int ReturnShipY(int x, int y) /////
+	{
+		int tmpx = 0;
+		int tmpy = 0;
+		for (int i = 0; i < 10; i++)
+			for (int j = 0; j < vCoordUs[i].size(); j++) {
+				if ((vCoordUs[i][j] == x) && (vCoordUs[i][j + 1] == y))
+				{
+					tmpy = j;
+					break;// вернуть размер и место x
+				}
+			}
+		return tmpy;
 	}
 
 	int ReturnShip1(int x, int y) /////
@@ -543,7 +570,9 @@ public:
 			for (int j = 0; j < 4; j++) {
 				if ((vCoordUs[i][j] == x) && (vCoordUs[i][j + 1] == y))
 				{
-					tmp = i; // вернуть размер и место x
+					tmp = i;
+					break;
+					// вернуть размер и место x
 				}
 			}
 		return tmp;
@@ -601,8 +630,23 @@ public:
 	int ShotUser(int x, int y)
 	{
 		int status;
-		vector<int> v;
-		if (com.ReturnVCom(x, y) == 1)
+		int i;
+		int j;
+		i = com.ReturnShip1(x, y);
+		j = com.ReturnShipY(x, y);
+		if ((i != 0) && (j != 0))
+		{
+			us.VUsCom(x, y, 2);
+			com.ExShip(i, j);
+			status = 1;
+		}
+		else
+		{
+			us.VUsCom(x, y, 1);
+			status = 0;
+		}
+		return status;
+		/*if (com.ReturnVCom(x, y) == 1)
 		{
 			us.VUsCom(x, y, 2);
 			v = com.ReturnShip(x, y);//#
@@ -613,7 +657,7 @@ public:
 		{
 			us.VUsCom(x, y, 1);
 			status = 0;
-		}
+		}*/
 		return status;
 	}
 	//
@@ -638,6 +682,7 @@ public:
 				vXY[1] = y;
 			}
 			else
+			{
 				if (com.ReturnVComUser(x, y) == 2)
 					status = -1;
 				else
@@ -645,6 +690,7 @@ public:
 					com.VComUser(x, y, 1);
 					status = 0;
 				}
+			}
 		}
 		return status;
 	}
@@ -1421,6 +1467,7 @@ void main()
 	int StatusShip;
 	int CounterShip = 0;
 	int tmp, status;
+	int tmpprov = 1;
 	com.Ship();
 	/*for (int i = 4; i >= 1; i--)
 	{
@@ -1459,7 +1506,7 @@ void main()
 	int ShotCom;
 	int KillUser;
 	int KillCom;
-	int tmp1 = 1;
+	
 	while ((UsLoss == 0) || (ComLoss == 0))
 	{
 		cout << "\\\\\\\\\\\\\\\\ us";
@@ -1474,9 +1521,10 @@ void main()
 		cout << "y = ";
 		cin >> y;
 		ShotUser = game.ShotUser(x, y);
-		KillUser = com.Kill(com.ReturnShip1(x, y));
+		
 		if (ShotUser == 1) {
 			cout << "Попал \n";
+			KillUser = com.Kill(com.ReturnShip1(x, y));
 			if (KillUser == 1)
 			{
 				cout << "Потопил \n";
@@ -1493,7 +1541,6 @@ void main()
 		}
 		else 
 			cout << "Промах \n";
-		system("cls");
 
 
 		//комп
@@ -1501,11 +1548,14 @@ void main()
 		cout << "\n";
 		com.Print2();
 		cout << "\n";
-		if (tmp1 == 1)
+	
+		if (tmpprov == 1)
 		{
-			ShotCom = game.ShotComputer();// стреляем
 			x1 = game.ReturnVX();
 			y1 = game.ReturnVY();
+			cout << x1;
+			cout << y1;
+			ShotCom = game.ShotComputer();// стреляем
 			game.MDelit();
 			game.MoviesAdd(x1, y1);
 		}
@@ -1513,7 +1563,7 @@ void main()
 		if ((ShotCom == 1) && (KillUser == 1)) {
 			
 			cout << "Компьютер потопил \n";
-			tmp1 = 1;
+			tmpprov = 1;
 		}
 		if ((ShotCom == 1) && (KillUser != 1))
 		{
@@ -1522,7 +1572,7 @@ void main()
 			{
 				ShotCom = game.Strategy(x1, y1);
 			}
-			tmp1 = 0;
+			tmpprov = 0;
 		}
 		else
 			cout << "Компьютер промахнулся \n";
