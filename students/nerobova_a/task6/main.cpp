@@ -14,9 +14,7 @@ class Computer
 {
 private:
 	vector<vector<int>> vCom;
-	vector<vector<int>> vComUser;
-	vector<vector<int>> vCoordCom;
-	vector<vector<int>> vShip;	
+	vector<vector<int>> vComUser;	
 public:
 	Computer()
 	{
@@ -41,28 +39,20 @@ public:
 				vComUser[i][j] = 0;
 			}
 		}
-
-		vCoordCom.resize(10);
-
-		vShip.resize(10);
-		vShip[0].resize(4);
-		vShip[1].resize(3);
-		vShip[2].resize(3);
-		vShip[3].resize(2);
-		vShip[4].resize(2);
-		vShip[5].resize(2);
-		vShip[6].resize(1);
-		vShip[7].resize(1);
-		vShip[8].resize(1);
-		vShip[9].resize(1);
-
-		for (int i = 0, size = vShip.size(); i < size; i++)
-			for (int j = 0, size = vShip[i].size(); j < size; j++)
-			{
-				vShip[i][j] = 1;
-			}
 	}
 	
+	void Print()
+	{
+		int size = ReturnSizeCom();
+		for (int x = 0; x < size; x++) {
+			for (int y = 0; y < size; y++)
+			{
+				cout << ReturnVCom(x, y);
+			}
+			cout << "\n";
+		}
+	}
+
 	int Ship1(int n, int sizesh, int ch) // 0 --> 1 | установка кораблей n 
 	{
 		srand(time(0));
@@ -91,15 +81,15 @@ public:
 			}
 			if (tmp == (6 + 3 * sizesh))
 			{
-				vCoordCom[ch].resize(sizesh + 1);
+				//vCoordCom[ch].resize(sizesh + 1);
 				int c1 = 0;
 				int c2 = 1;
 
 				for (int i = y; i < (y + sizesh); i++)
 				{
-					vCoordCom[ch][c1] = x;
+					//vCoordCom[ch][c1] = x;
 					vCom[x][i] = 1;
-					vCoordCom[ch][c2] = i;
+					//vCoordCom[ch][c2] = i;
 					c1++;
 					c2++;
 				}
@@ -123,15 +113,15 @@ public:
 				}
 			if (tmp == (6 + 3 * sizesh))
 			{
-				vCoordCom[ch].resize(sizesh + 1);
+				//vCoordCom[ch].resize(sizesh + 1);
 				int c1 = 0;
 				int c2 = 1;
 
 				for (int i = x; i < (x + sizesh); i++)
 				{
 					vCom[i][y] = 1;
-					vCoordCom[ch][c1] = i;
-					vCoordCom[ch][c2] = y;
+					//vCoordCom[ch][c1] = i;
+					//vCoordCom[ch][c2] = y;
 					c1++;
 					c2++;
 				}
@@ -165,30 +155,7 @@ public:
 		}
 		return status;
 	}
-	void Print()
-	{
-		int size = vCom.size();
-		for (int x = 0; x < size; x++) {
-			for (int y = 0; y < size; y++)
-			{
-				cout << vCom[x][y];
-			}
-			cout << "\n";
-		}
-	}
-
-	void Print2()
-	{
-		int size = vComUser.size();
-		for (int x = 0; x < size; x++) {
-			for (int y = 0; y < size; y++)
-			{
-				cout << vComUser[x][y];
-			}
-			cout << "\n";
-		}
-	}
-
+	
 	int ReturnVCom(int x, int y)
 	{
 		return vCom[x][y];
@@ -213,71 +180,9 @@ public:
 	{
 		return vCom.size();
 	}
-	
-	int ReturnVCoordCom(int x, int y)
+	int ReturnSizeComUs()
 	{
-		return vCoordCom[x][y];
-	}
-
-	int ReturnShipY(int x, int y) /////
-	{
-		int tmpx = 0;
-		int tmpy = 0;
-		for (int i = 0; i < 10; i++)
-			for (int j = 0; j < vCoordCom[i].size(); j++) {
-				if ((vCoordCom[i][j] == x) && (vCoordCom[i][j + 1] == y))
-				{
-					tmpy = j; 
-					break;// вернуть размер и место x
-				}
-			}
-		return tmpy;
-	}
-
-	int ReturnShip1(int x, int y) /////
-	{
-		int tmpx = 0;
-		for (int i = 0; i < 10; i++)
-			for (int j = 0; j < vCoordCom[i].size(); j++) {
-				if ((vCoordCom[i][j] == x) && (vCoordCom[i][j + 1] == y))
-				{
-					tmpx = i; // вернуть размер и место x
-				}
-				break;
-			}
-		return tmpx;
-	}
-
-	void ExShip(int i, int j)
-	{
-		vShip[i][j] = 0;
-	}
-
-	int Kill(int sizech)
-	{
-		int status = 0;
-		int tmp = 0;
-		int size = vShip[sizech].size();
-		for (int i = 0; i < size; i++)
-			if (vShip[sizech][i] == 0)
-				tmp++;
-		if (tmp == size)
-			status = 1;
-		return status;
-	}
-
-	int Loss()
-	{
-		int status = 0;
-		int tmp = 0;
-		int size = vShip.size();
-		for (int i = 0; i < size; i++)
-			for (int j = 0, size1 = vShip[i].size(); j < size1; j++)
-				if (vShip[i][j] == 0)
-					tmp++;
-		if (tmp == size)
-			status = 1;
-		return status;
+		return vComUser.size();
 	}
 };
 
@@ -286,8 +191,6 @@ class User
 private:
 	vector<vector<int>> vUs;
 	vector<vector<int>> vUsCom;
-	vector<vector<int>> vCoordUs;
-	vector<vector<int>> vShip;
 public:
 	User()
 	{
@@ -311,191 +214,6 @@ public:
 				vUsCom[i][j] = 0;
 			}
 		}
-		vCoordUs.resize(10);
-
-		vShip.resize(10);
-		vShip[0].resize(4);
-		vShip[1].resize(3);
-		vShip[2].resize(3);
-		vShip[3].resize(2);
-		vShip[4].resize(2);
-		vShip[5].resize(2);
-		vShip[6].resize(1);
-		vShip[7].resize(1);
-		vShip[8].resize(1);
-		vShip[9].resize(1);
-
-		for (int i = 0, size = vShip.size(); i < size; i++)
-			for (int j = 0, size = vShip[i].size(); j < size; j++)
-			{
-				vShip[i][j] = 1;
-			}
-	}
-
-	int ShipUser1(int x, int y, int n, int sizesh, int ch)
-	{
-		int tmp;
-		int size = vUs.size();
-		int status = 0;
-		if ((n == 0) && ((y + sizesh - 1) <= (size - 2)))
-		{
-			tmp = 0;
-			for (int i = (y - 1); i <= (y + sizesh); i++)
-			{
-				for (int j = (x - 1); j <= (x + 1); j++)
-				{
-					if (vUs[j][i] == 0)
-					{
-						tmp++;
-					}
-					else
-						break;
-				}
-			}
-			if (tmp == (6 + 3 * sizesh))
-			{
-				vCoordUs[ch].resize(sizesh + 1);
-				int c1 = 0;
-				int c2 = 1;
-				for (int i = y; i < (y + sizesh); i++)
-				{
-					vCoordUs[ch][c1] = x;
-					vUs[x][i] = 1;
-					vCoordUs[ch][c2] = i;
-					c1++;
-					c2++;
-				}
-				status = 1;
-			}
-		}
-		if (((n == 1) && ((x + sizesh - 1) <= (size - 2))))
-		{
-			tmp = 0;
-			for (int i = (x - 1); i <= (x + sizesh); i++)
-				for (int j = (y - 1); j <= (y + 1); j++)
-				{
-					{
-						if (vUs[i][j] == 0)
-						{
-							tmp++;
-						}
-						else
-							break;
-					}
-				}
-			if (tmp == (6 + 3 * sizesh))
-			{
-				vCoordUs[ch].resize(sizesh + 1);
-				int c1 = 0;
-				int c2 = 1;
-				for (int i = x; i < (x + sizesh); i++)
-				{
-					vUs[x][i] = 1;
-					vCoordUs[ch][c1] = i;
-					vCoordUs[ch][c2] = y;
-					c1++;
-					c2++;
-				}
-				status = 1;
-			}
-		}
-		return status;
-	}
-
-	int ShipUser(int x, int y, int n, int sizesh, int ch)
-	{
-		int tmp;
-		int status = 0;
-		int size = vUs.size();
-		if ((n == 0) && ((y + sizesh - 1) <= (size - 2)))
-		{
-			tmp = 0;
-			for (int i = (y - 1); i <= (y + sizesh); i++)
-			{
-				for (int j = (x - 1); j <= (x + 1); j++)
-				{
-					if (vUs[j][i] == 0)
-					{
-						tmp++;
-					}
-					else
-						break;
-
-				}
-			}
-			if (tmp == (6 + 3 * sizesh))
-			{
-				vCoordUs[ch].resize(sizesh + 1);
-				int c1 = 0;
-				int c2 = 1;
-
-				for (int i = y; i < (y + sizesh); i++)
-				{
-					vCoordUs[ch][c1] = x;
-					vUs[x][i] = 1;
-					vCoordUs[ch][c2] = i;
-					c1++;
-					c2++;
-				}
-				status = 1;
-			}
-		}
-		if (((n == 1) && ((x + sizesh - 1) <= (size - 2))))
-		{
-			tmp = 0;
-			for (int i = (x - 1); i <= (x + sizesh); i++)
-				for (int j = (y - 1); j <= (y + 1); j++)
-				{
-					{
-						if (vUs[i][j] == 0)
-						{
-							tmp++;
-						}
-						else
-							break;
-					}
-				}
-			if (tmp == (6 + 3 * sizesh))
-			{
-				vCoordUs[ch].resize(sizesh + 1);
-				int c1 = 0;
-				int c2 = 1;
-
-				for (int i = x; i < (x + sizesh); i++)
-				{
-					vUs[i][y] = 1;
-					vCoordUs[ch][c1] = i;
-					vCoordUs[ch][c2] = y;
-					c1++;
-					c2++;
-				}
-				status = 1;
-			}
-		}
-		return status;
-	}
-
-	void Print()
-	{
-		int size = vUs.size();
-		for (int x = 0; x < size; x++) {
-			for (int y = 0; y < size; y++)
-			{
-				cout << vUs[x][y];
-			}
-			cout << "\n";
-		}
-	}
-	void Print2()
-	{
-		int size = vUsCom.size();
-		for (int x = 0; x < size; x++) {
-			for (int y = 0; y < size; y++)
-			{
-				cout << vUsCom[x][y];
-			}
-			cout << "\n";
-		}
 	}
 
 	int ReturnVUs(int x, int y)
@@ -518,22 +236,323 @@ public:
 		vUsCom[x][y] = n;
 	}
 
-	vector<int>ReturnShip(int x, int y) /////
+	int ReturnSizeUs()
 	{
-		vector<int>v;
-		v.resize(2);
-		for (int i = 0; i < 10; i++)
-			for (int j = 0; j < vCoordUs[i].size(); j++) {
-				if ((vCoordUs[i][j] == x) && (vCoordUs[i][j + 1] == y))
-				{
-					v[0] = i; // вернуть размер и место x
-					v[1] = j;
-				}
-			}
-		return v;
+		return vUs.size();
 	}
 
-	int ReturnShipX(int x, int y) /////
+	int ReturnSizeUsCom()
+	{
+		return vUsCom.size();
+	}
+};
+
+class Game
+{
+private:
+	vector<vector<int>> vCoordCom;
+	vector<vector<int>> vShipCom;
+	vector<vector<int>> vCoordUs;
+	vector<vector<int>> vShipUs;
+
+	//int tmp;
+	int x2;
+	int y2;
+	User us;
+	Computer com;
+	list<int> Movies;
+	list<int> Movies1;
+	int counter = 0;
+	vector<int> vXY;
+public:
+	Game() { vXY.resize(2);
+	
+	vCoordCom.resize(10);
+	vShipCom.resize(10);
+	vShipCom[0].resize(4);
+	vShipCom[1].resize(3);
+	vShipCom[2].resize(3);
+	vShipCom[3].resize(2);
+	vShipCom[4].resize(2);
+	vShipCom[5].resize(2);
+	vShipCom[6].resize(1);
+	vShipCom[7].resize(1);
+	vShipCom[8].resize(1);
+	vShipCom[9].resize(1);
+
+	for (int i = 0, size = vShipCom.size(); i < size; i++)
+		for (int j = 0, size = vShipCom[i].size(); j < size; j++)
+		{
+			vShipCom[i][j] = 1;
+		}
+
+	vCoordUs.resize(10);
+
+	vShipUs.resize(10);
+	vShipUs[0].resize(4);
+	vShipUs[1].resize(3);
+	vShipUs[2].resize(3);
+	vShipUs[3].resize(2);
+	vShipUs[4].resize(2);
+	vShipUs[5].resize(2);
+	vShipUs[6].resize(1);
+	vShipUs[7].resize(1);
+	vShipUs[8].resize(1);
+	vShipUs[9].resize(1);
+
+	for (int i = 0, size = vShipUs.size(); i < size; i++)
+		for (int j = 0, size = vShipUs[i].size(); j < size; j++)
+		{
+			vShipUs[i][j] = 1;
+		}
+
+	}
+
+	int Ship1Com(int n, int sizesh, int ch) // 0 --> 1 | установка кораблей n 
+	{
+		srand(time(0));
+		int x, y;
+		int tmp;
+		int status = 0;
+		int size = com.ReturnSizeCom();
+		x = rand() % (size - 2) + 1; // [1 - 10]
+		y = rand() % (size - 2) + 1;
+
+		if ((n == 0) && ((y + sizesh - 1) <= (size - 2)))
+		{
+			tmp = 0;
+			for (int i = (y - 1); i <= (y + sizesh); i++)
+			{
+				for (int j = (x - 1); j <= (x + 1); j++)
+				{
+					if (com.ReturnVCom(j,i) == 0)
+					{
+						tmp++;
+					}
+					else
+						break;
+
+				}
+			}
+			if (tmp == (6 + 3 * sizesh))
+			{
+				vCoordCom[ch].resize(sizesh + 1);
+				int c1 = 0;
+				int c2 = 1;
+
+				for (int i = y; i < (y + sizesh); i++)
+				{
+					vCoordCom[ch][c1] = x;
+					com.VCom(x, i, 1);
+					vCoordCom[ch][c2] = i;
+					c1++;
+					c2++;
+				}
+				status = 1;
+			}
+		}
+		if (((n == 1) && ((x + sizesh - 1) <= (size - 2))))
+		{
+			tmp = 0;
+			for (int i = (x - 1); i <= (x + sizesh); i++)
+				for (int j = (y - 1); j <= (y + 1); j++)
+				{
+					{
+						if (com.ReturnVCom(i, j) == 0)
+						{
+							tmp++;
+						}
+						else
+							break;
+					}
+				}
+			if (tmp == (6 + 3 * sizesh))
+			{
+				vCoordCom[ch].resize(sizesh + 1);
+				int c1 = 0;
+				int c2 = 1;
+
+				for (int i = x; i < (x + sizesh); i++)
+				{
+					com.VCom(i, y, 1);
+					vCoordCom[ch][c1] = i;
+					vCoordCom[ch][c2] = y;
+					c1++;
+					c2++;
+				}
+				status = 1;
+			}
+		}
+		return status;
+	}
+	int ShipCom()
+	{
+		int tmp;
+		int n;
+		int status = 0;
+		srand(time(0));
+		int ch = 0;
+		for (int i = 4; i >= 1; i--)
+		{
+			tmp = 4;
+			while (tmp >= i)
+			{
+				status = 0;
+				while (status == 0)
+				{
+					n = rand() % 2;
+					status = Ship1Com(n, i, ch);
+				}
+				ch++;
+				tmp--;
+			}
+		}
+		return status;
+	}
+
+	int ShipUser(int x, int y, int n, int sizesh, int ch)
+	{
+		int tmp;
+		int size = us.ReturnSizeUs();
+		int status = 0;
+		if ((n == 0) && ((y + sizesh - 1) <= (size - 2)))
+		{
+			tmp = 0;
+			for (int i = (y - 1); i <= (y + sizesh); i++)
+			{
+				for (int j = (x - 1); j <= (x + 1); j++)
+				{
+					if (us.ReturnVUs(j, i) == 0)
+					{
+						tmp++;
+					}
+					else
+						break;
+				}
+			}
+			if (tmp == (6 + 3 * sizesh))
+			{
+				vCoordUs[ch].resize(sizesh + 1);
+				int c1 = 0;
+				int c2 = 1;
+				for (int i = y; i < (y + sizesh); i++)
+				{
+					vCoordUs[ch][c1] = x;
+					us.VUs(x, i, 1);
+					vCoordUs[ch][c2] = i;
+					c1++;
+					c2++;
+				}
+				status = 1;
+			}
+		}
+		if (((n == 1) && ((x + sizesh - 1) <= (size - 2))))
+		{
+			tmp = 0;
+			for (int i = (x - 1); i <= (x + sizesh); i++)
+				for (int j = (y - 1); j <= (y + 1); j++)
+				{
+					{
+						if (us.ReturnVUs(i, j) == 0)
+						{
+							tmp++;
+						}
+						else
+							break;
+					}
+				}
+			if (tmp == (6 + 3 * sizesh))
+			{
+				vCoordUs[ch].resize(sizesh + 1);
+				int c1 = 0;
+				int c2 = 1;
+				for (int i = x; i < (x + sizesh); i++)
+				{
+					us.VUs(i, y, 1);
+					vCoordUs[ch][c1] = i;
+					vCoordUs[ch][c2] = y;
+					c1++;
+					c2++;
+				}
+				status = 1;
+			}
+		}
+		return status;
+	}
+
+	int ReturnShipYCom(int x, int y) /////
+	{
+		int tmpx = 0;
+		int tmpy = 0;
+		for (int i = 0; i < 10; i++)
+			for (int j = 0; j < vCoordCom[i].size(); j++) {
+				if ((vCoordCom[i][j] == x) && (vCoordCom[i][j + 1] == y))
+				{
+					tmpy = j;
+					break;
+				}
+			}
+		return tmpy;
+	}
+
+	int ReturnShipXCom(int x, int y) /////
+	{
+		int tmpx = 0;
+		for (int i = 0; i < 10; i++)
+			for (int j = 0; j < vCoordCom[i].size(); j++) {
+				if ((vCoordCom[i][j] == x) && (vCoordCom[i][j + 1] == y))
+				{
+					tmpx = i; // вернуть размер и место x
+				}
+				break;
+			}
+		return tmpx;
+	}
+
+	void ExShipCom(int i, int j)
+	{
+		vShipCom[i][j] = 0;
+	}
+	// выстрел игрока
+	int ShotUser(int x, int y)
+	{
+		int status;
+		int i;
+		int j;
+		/*i = ReturnShipXCom(x, y);
+		j = ReturnShipYCom(x, y);
+		if ((i != 0) && (j != 0))
+		{
+			us.VUsCom(x, y, 2);
+			ExShipCom(i, j);
+			status = 1;
+		}
+		else
+		{
+			us.VUsCom(x, y, 1);
+			status = 0;
+		}
+		return status;*/
+		
+		if (com.ReturnVCom(x, y) == 1)
+		{
+			us.VUsCom(x, y, 2);
+			//v = com.ReturnShip(x, y);//#
+			//com.ExShip(v[0], v[1]);
+			i = ReturnShipXCom(x, y);
+			j = ReturnShipYCom(x, y);
+			ExShipCom(i, j);
+			status = 1;
+		}
+		else
+		{
+			us.VUsCom(x, y, 1);
+			status = 0;
+		}
+		return status;
+	}
+
+	int ReturnShipXUs(int x, int y) /////
 	{
 		int tmpx = 0;
 		int tmpy = 0;
@@ -547,7 +566,7 @@ public:
 		return tmpx;
 	}
 
-	int ReturnShipY(int x, int y) /////
+	int ReturnShipYUs(int x, int y) /////
 	{
 		int tmpx = 0;
 		int tmpy = 0;
@@ -561,113 +580,20 @@ public:
 			}
 		return tmpy;
 	}
-
-	int ReturnShip1(int x, int y) /////
+	
+	void ExShipUs(int i, int j)
 	{
-		int tmp;
-		int size = -1;
-		for (int i = 0; i < 10; i++)
-			for (int j = 0; j < 4; j++) {
-				if ((vCoordUs[i][j] == x) && (vCoordUs[i][j + 1] == y))
-				{
-					tmp = i;
-					break;
-					// вернуть размер и место x
-				}
-			}
-		return tmp;
+		vShipUs[i][j] = 0;
 	}
 
-	void ExShip(int i, int j)
-	{
-		vShip[i][j] = 0;
-	}
-
-	int Kill(int sizech)
-	{
-		int status = 0;
-		int tmp = 0;
-		int size = vShip[sizech].size();
-		for (int i = 0; i < size; i++)
-			if (vShip[sizech][i] == 0)
-				tmp++;
-		if (tmp == size)
-			status = 1;
-		return status;
-	}
-
-	int Loss()
-	{
-		int status = 0;
-		int tmp = 0;
-		int size = vShip.size();
-		for (int i = 0; i < size; i++)
-			for (int j = 0, size1 = vShip[i].size(); j < size1; j++)
-				if (vShip[i][j] == 0)
-					tmp++;
-		if (tmp == size)
-			status = 1;
-		return status;
-	}
-};
-
-class Game
-{
-private:
-	int tmp;
-	int x2;
-	int y2;
-	User us;
-	Computer com;
-	list<int> Movies;
-	list<int> Movies1;
-	queue <int> q;
-	int counter = 0;
-	vector<int> vXY;
-public:
-	Game() { vXY.resize(2); }
-	// выстрел игрока
-	int ShotUser(int x, int y)
-	{
-		int status;
-		int i;
-		int j;
-		i = com.ReturnShip1(x, y);
-		j = com.ReturnShipY(x, y);
-		if ((i != 0) && (j != 0))
-		{
-			us.VUsCom(x, y, 2);
-			com.ExShip(i, j);
-			status = 1;
-		}
-		else
-		{
-			us.VUsCom(x, y, 1);
-			status = 0;
-		}
-		return status;
-		/*if (com.ReturnVCom(x, y) == 1)
-		{
-			us.VUsCom(x, y, 2);
-			v = com.ReturnShip(x, y);//#
-			com.ExShip(v[0], v[1]);
-			status = 1;
-		}
-		else
-		{
-			us.VUsCom(x, y, 1);
-			status = 0;
-		}*/
-		return status;
-	}
-	//
 	int ShotComputer()
 	{
 		int size = com.ReturnSizeCom();
 		int x, y;
-		vector<int> v;
 		srand(time(0));
 		int status = -1;
+		int i;
+		int j;
 		while (status = -1)
 		{
 			x = rand() % (size - 2) + 1;
@@ -675,8 +601,9 @@ public:
 			if ((us.ReturnVUs(x, y) == 1) && (com.ReturnVComUser(x, y) == 0))
 			{
 				com.VComUser(x, y, 2);
-				v = us.ReturnShip(x, y);//#
-				us.ExShip(v[0], v[1]);
+				i = ReturnShipXCom(x, y);
+				j = ReturnShipYCom(x, y);
+				ExShipUs(i, j);
 				status = 1;
 				vXY[0] = x;
 				vXY[1] = y;
@@ -701,11 +628,14 @@ public:
 		vector<int> v;
 		srand(time(0));
 		int status;
+		int i;
+		int j;
 		if (us.ReturnVUs(x, y) == 1)
 		{
 			com.VComUser(x, y, 2);
-			v = us.ReturnShip(x, y);//#
-			us.ExShip(v[0], v[1]);
+			i = ReturnShipXCom(x, y);
+			j = ReturnShipYCom(x, y);
+			ExShipUs(i, j);
 			status = 1;
 		}
 		else
@@ -734,6 +664,60 @@ public:
 			Movies.pop_front();
 	}
 	//
+	int KillCom(int sizech)
+	{
+		int status = 0;
+		int tmp = 0;
+		int size = vShipCom[sizech].size();
+		for (int i = 0; i < size; i++)
+			if (vShipCom[sizech][i] == 0)
+				tmp++;
+		if (tmp == size)
+			status = 1;
+		return status;
+	}
+
+	int LossCom()
+	{
+		int status = 0;
+		int tmp = 0;
+		int size = vShipCom.size();
+		for (int i = 0; i < size; i++)
+			for (int j = 0, size1 = vShipCom[i].size(); j < size1; j++)
+				if (vShipCom[i][j] == 0)
+					tmp++;
+		if (tmp == size)
+			status = 1;
+		return status;
+	}
+
+	int KillUs(int sizech)
+	{
+		int status = 0;
+		int tmp = 0;
+		int size = vShipUs[sizech].size();
+		for (int i = 0; i < size; i++)
+			if (vShipUs[sizech][i] == 0)
+				tmp++;
+		if (tmp == size)
+			status = 1;
+		return status;
+	}
+
+	int LossUs()
+	{
+		int status = 0;
+		int tmp = 0;
+		int size = vShipUs.size();
+		for (int i = 0; i < size; i++)
+			for (int j = 0, size1 = vShipUs[i].size(); j < size1; j++)
+				if (vShipUs[i][j] == 0)
+					tmp++;
+		if (tmp == size)
+			status = 1;
+		return status;
+	}
+
 	int Strategy(int x, int y)
 	{
 		int x1, y1;
@@ -751,13 +735,13 @@ public:
 				status = 0;
 				counter++;
 			}
-			if ((ShotComputer1(x1, y1) == 1) && (com.Kill(com.ReturnShip1(x1, y1)) == 1)) //*
+			if ((ShotComputer1(x1, y1) == 1) && (KillCom(ReturnShipXCom(x1, y1)) == 1)) //*
 			{
-				us.ExShip(x1, y1);
+				ExShipUs(x1, y1);
 				counter = 0;
 				status = 1;
 			}
-			if ((ShotComputer1(x1, y1) == 1) && (com.Kill(com.ReturnShip1(x1, y1)) != 1))//2
+			if ((ShotComputer1(x1, y1) == 1) && (KillCom(ReturnShipXCom(x1, y1)) != 1))//2
 			{
 				MDelit();
 				MoviesAdd(x1, y1);
@@ -772,7 +756,7 @@ public:
 				Movies.pop_front();
 				y1 = Movies.front();
 				Movies.pop_front();
-				if ((ShotComputer1(x1, y1) == 1) && (com.Kill(com.ReturnShip1(x1, y1)) != 1))//3
+				if ((ShotComputer1(x1, y1) == 1) && (KillCom(ReturnShipXCom(x1, y1)) != 1))//3
 				{
 					MDelit();
 					MoviesAdd(x1, y1);
@@ -787,11 +771,11 @@ public:
 					Movies.pop_front();
 					y1 = Movies.front();
 					Movies.pop_front();
-					if ((ShotComputer1(x1, y1) == 1) && (com.Kill(com.ReturnShip1(x1, y1)) == 1))
+					if ((ShotComputer1(x1, y1) == 1) && (KillCom(ReturnShipXCom(x1, y1)) == 1))
 					{
 						status = 1;
 						counter = 0;
-						us.ExShip(x1, y1);
+						ExShipUs(x1, y1);
 					}
 					else
 					{
@@ -807,19 +791,19 @@ public:
 						Movies.pop_front();
 						y1 = Movies.front();
 						Movies.pop_front();
-						if ((ShotComputer1(x1, y1) == 1) && (com.Kill(com.ReturnShip1(x1, y1)) == 1))
+						if ((ShotComputer1(x1, y1) == 1) && (KillCom(ReturnShipXCom(x1, y1)) == 1))
 						{
-							us.ExShip(x1, y1);
+							ExShipUs(x1, y1);
 							counter = 0;
 							status = 1;
 						}
 					}
 				}
-				if ((ShotComputer1(x1, y1) == 1) && (com.Kill(com.ReturnShip1(x1, y1)) == 1))
+				if ((ShotComputer1(x1, y1) == 1) && (KillCom(ReturnShipXCom(x1, y1)) == 1))
 				{
 					counter = 0;
 					status = 1;
-					us.ExShip(x1, y1);
+					ExShipUs(x1, y1);
 				}
 				if (ShotComputer1(x1, y1) != 1)
 				{
@@ -843,7 +827,7 @@ public:
 				Movies.pop_front();
 				Movies.pop_front();
 			}
-		
+
 			x1 = Movies.front();
 			Movies.pop_front();
 			y1 = Movies.front();
@@ -853,15 +837,15 @@ public:
 				status = 0;
 				counter++;
 			}
-			if ((ShotComputer1(x1, y1) == 1) && (com.Kill(com.ReturnShip1(x1, y1)) == 1))
+			if ((ShotComputer1(x1, y1) == 1) && (KillCom(ReturnShipXCom(x1, y1)) == 1))
 			{
 				status = 1;
 				counter = 0;
-				us.ExShip(x1, y1);
+				ExShipUs(x1, y1);
 			}
-			if ((ShotComputer1(x1, y1) == 1) && (com.Kill(com.ReturnShip1(x1, y1)) != 1))
+			if ((ShotComputer1(x1, y1) == 1) && (KillCom(ReturnShipXCom(x1, y1)) != 1))
 			{
-				while (com.Kill(com.ReturnShip1(x1, y1)) != 1)
+				while (KillCom(ReturnShipXCom(x1, y1)) != 1)
 				{
 					MoviesAdd(x1, y1);
 					for (int i = 0; i < counter; i++)
@@ -876,7 +860,7 @@ public:
 				}
 				status = 1;
 				counter = 0;
-				us.ExShip(x1, y1);
+				ExShipUs(x1, y1);
 			}
 		}
 		if ((x == 10) && (y == 1)) ///
@@ -896,15 +880,15 @@ public:
 				counter++;
 				counter++;
 			}
-			if ((ShotComputer1(x1, y1) == 1) && (com.Kill(com.ReturnShip1(x1, y1)) == 1))
+			if ((ShotComputer1(x1, y1) == 1) && (KillCom(ReturnShipXCom(x1, y1)) == 1))
 			{
 				status = 1;
 				counter = 0;
-				us.ExShip(x1, y1);
+				ExShipUs(x1, y1);
 			}
-			if ((ShotComputer1(x1, y1) == 1) && (com.Kill(com.ReturnShip1(x1, y1)) != 1))
+			if ((ShotComputer1(x1, y1) == 1) && (KillCom(ReturnShipXCom(x1, y1)) != 1))
 			{
-				while (com.Kill(com.ReturnShip1(x1, y1)) != 1)
+				while (KillCom(ReturnShipXCom(x1, y1)) != 1)
 				{
 					MoviesAdd(x1, y1);
 					for (int i = 0; i < counter; i++)
@@ -919,7 +903,7 @@ public:
 				}
 				status = 1;
 				counter = 0;
-				us.ExShip(x1, y1);
+				ExShipUs(x1, y1);
 			}
 		}
 		if ((x == 1) && (y == 10))///
@@ -941,15 +925,15 @@ public:
 				counter++;
 				counter++;
 			}
-			if ((ShotComputer1(x1, y1) == 1) && (com.Kill(com.ReturnShip1(x1, y1)) == 1))
+			if ((ShotComputer1(x1, y1) == 1) && (KillCom(ReturnShipXCom(x1, y1)) == 1))
 			{
 				status = 1;
 				counter = 0;
-				us.ExShip(x1, y1);
+				ExShipUs(x1, y1);
 			}
-			if ((ShotComputer1(x1, y1) == 1) && (com.Kill(com.ReturnShip1(x1, y1)) != 1))
+			if ((ShotComputer1(x1, y1) == 1) && (KillCom(ReturnShipXCom(x1, y1)) != 1))
 			{
-				while (com.Kill(com.ReturnShip1(x1, y1)) != 1)
+				while (KillCom(ReturnShipXCom(x1, y1)) != 1)
 				{
 					MoviesAdd(x1, y1);
 					for (int i = 0; i < counter; i++)
@@ -964,7 +948,7 @@ public:
 				}
 				status = 1;
 				counter = 0;
-				us.ExShip(x1, y1);
+				ExShipUs(x1, y1);
 			}
 		}
 		if ((x == 10) && (y == 10)) ///
@@ -985,15 +969,15 @@ public:
 				counter++;
 				counter++;
 			}
-			if ((ShotComputer1(x1, y1) == 1) && (com.Kill(com.ReturnShip1(x1, y1)) == 1))
+			if ((ShotComputer1(x1, y1) == 1) && (KillCom(ReturnShipXCom(x1, y1)) == 1))
 			{
 				status = 1;
 				counter = 0;
-				us.ExShip(x1, y1);
+				ExShipUs(x1, y1);
 			}
-			if ((ShotComputer1(x1, y1) == 1) && (com.Kill(com.ReturnShip1(x1, y1)) != 1))
+			if ((ShotComputer1(x1, y1) == 1) && (KillCom(ReturnShipXCom(x1, y1)) != 1))
 			{
-				while (com.Kill(com.ReturnShip1(x1, y1)) != 1)
+				while (KillCom(ReturnShipXCom(x1, y1)) != 1)
 				{
 					MoviesAdd(x1, y1);
 					for (int i = 0; i < counter; i++)
@@ -1008,7 +992,7 @@ public:
 				}
 				status = 1;
 				counter = 0;
-				us.ExShip(x1, y1);
+				ExShipUs(x1, y1);
 			}
 		}
 		if ((x == 1) && (y != 1) && (y != 10))
@@ -1029,13 +1013,13 @@ public:
 				status = 0;
 				counter++;
 			}
-			if ((ShotComputer1(x1, y1) == 1) && (com.Kill(com.ReturnShip1(x1, y1)) == 1))
+			if ((ShotComputer1(x1, y1) == 1) && (KillCom(ReturnShipXCom(x1, y1)) == 1))
 			{
 				status = 1;
 				counter = 0;
-				us.ExShip(x1, y1);
+				ExShipUs(x1, y1);
 			}
-			if ((ShotComputer1(x1, y1) == 1) && (com.Kill(com.ReturnShip1(x1, y1)) != 1))
+			if ((ShotComputer1(x1, y1) == 1) && (KillCom(ReturnShipXCom(x1, y1)) != 1))
 			{
 				MDelit();
 				MoviesAdd(x1, y1);
@@ -1049,7 +1033,7 @@ public:
 				y1 = Movies.front();
 				Movies.pop_front();
 
-				if ((ShotComputer1(x1, y1) == 1) && (com.Kill(com.ReturnShip1(x1, y1)) != 1))//2
+				if ((ShotComputer1(x1, y1) == 1) && (KillCom(ReturnShipXCom(x1, y1)) != 1))//2
 				{
 					MDelit();
 					MoviesAdd(x1, y1);
@@ -1064,7 +1048,7 @@ public:
 					Movies.pop_front();
 					y1 = Movies.front();
 					Movies.pop_front();
-					if ((ShotComputer1(x1, y1) == 1) && (com.Kill(com.ReturnShip1(x1, y1)) != 1))//3
+					if ((ShotComputer1(x1, y1) == 1) && (KillCom(ReturnShipXCom(x1, y1)) != 1))//3
 					{
 						MDelit();
 						MoviesAdd(x1, y1);
@@ -1079,11 +1063,11 @@ public:
 						Movies.pop_front();
 						y1 = Movies.front();
 						Movies.pop_front();
-						if ((ShotComputer1(x1, y1) == 1) && (com.Kill(com.ReturnShip1(x1, y1)) == 1))
+						if ((ShotComputer1(x1, y1) == 1) && (KillCom(ReturnShipXCom(x1, y1)) == 1))
 						{
 							status = 1;
 							counter = 0;
-							us.ExShip(x1, y1);
+							ExShipUs(x1, y1);
 						}
 						else
 						{
@@ -1099,17 +1083,17 @@ public:
 							Movies.pop_front();
 							y1 = Movies.front();
 							Movies.pop_front();
-							if ((ShotComputer1(x1, y1) == 1) && (com.Kill(com.ReturnShip1(x1, y1)) == 1))
+							if ((ShotComputer1(x1, y1) == 1) && (KillCom(ReturnShipXCom(x1, y1)) == 1))
 							{
 								counter = 0;
 								status = 1;
-								us.ExShip(x1, y1);
+								ExShipUs(x1, y1);
 							}
 						}
 					}
 				}
 			}
-			  
+
 		}
 		if ((x == 10) && (y != 1) && (y != 10))
 		{
@@ -1129,13 +1113,13 @@ public:
 				counter++;
 				counter++;
 			}
-			if ((ShotComputer1(x1, y1) == 1) && (com.Kill(com.ReturnShip1(x1, y1)) == 1))
+			if ((ShotComputer1(x1, y1) == 1) && (KillCom(ReturnShipXCom(x1, y1)) == 1))
 			{
 				status = 1;
 				counter = 0;
-				us.ExShip(x1, y1);
+				ExShipUs(x1, y1);
 			}
-			if ((ShotComputer1(x1, y1) == 1) && (com.Kill(com.ReturnShip1(x1, y1)) != 1))
+			if ((ShotComputer1(x1, y1) == 1) && (KillCom(ReturnShipXCom(x1, y1)) != 1))
 			{
 				MDelit();
 				MoviesAdd(x1, y1);
@@ -1149,7 +1133,7 @@ public:
 				y1 = Movies.front();
 				Movies.pop_front();
 
-				if ((ShotComputer1(x1, y1) == 1) && (com.Kill(com.ReturnShip1(x1, y1)) != 1))//2
+				if ((ShotComputer1(x1, y1) == 1) && (KillCom(ReturnShipXCom(x1, y1)) != 1))//2
 				{
 					MDelit();
 					MoviesAdd(x1, y1);
@@ -1164,7 +1148,7 @@ public:
 					Movies.pop_front();
 					y1 = Movies.front();
 					Movies.pop_front();
-					if ((ShotComputer1(x1, y1) == 1) && (com.Kill(com.ReturnShip1(x1, y1)) != 1))//3
+					if ((ShotComputer1(x1, y1) == 1) && (KillCom(ReturnShipXCom(x1, y1)) != 1))//3
 					{
 						MDelit();
 						MoviesAdd(x1, y1);
@@ -1179,11 +1163,11 @@ public:
 						Movies.pop_front();
 						y1 = Movies.front();
 						Movies.pop_front();
-						if ((ShotComputer1(x1, y1) == 1) && (com.Kill(com.ReturnShip1(x1, y1)) == 1))
+						if ((ShotComputer1(x1, y1) == 1) && (KillCom(ReturnShipXCom(x1, y1)) == 1))
 						{
 							status = 1;
 							counter = 0;
-							us.ExShip(x1, y1);
+							ExShipUs(x1, y1);
 						}
 						else
 						{
@@ -1199,11 +1183,11 @@ public:
 							Movies.pop_front();
 							y1 = Movies.front();
 							Movies.pop_front();
-							if ((ShotComputer1(x1, y1) == 1) && (com.Kill(com.ReturnShip1(x1, y1)) == 1))
+							if ((ShotComputer1(x1, y1) == 1) && (KillCom(ReturnShipXCom(x1, y1)) == 1))
 							{
 								counter = 0;
 								status = 1;
-								us.ExShip(x1, y1);
+								ExShipUs(x1, y1);
 							}
 						}
 					}
@@ -1226,13 +1210,13 @@ public:
 				status = 0;
 				counter++;
 			}
-			if ((ShotComputer1(x1, y1) == 1) && (com.Kill(com.ReturnShip1(x1, y1)) == 1))
+			if ((ShotComputer1(x1, y1) == 1) && (KillCom(ReturnShipXCom(x1, y1)) == 1))
 			{
 				status = 1;
 				counter = 0;
-				us.ExShip(x1, y1);
+				ExShipUs(x1, y1);
 			}
-			if ((ShotComputer1(x1, y1) == 1) && (com.Kill(com.ReturnShip1(x1, y1)) != 1))
+			if ((ShotComputer1(x1, y1) == 1) && (KillCom(ReturnShipXCom(x1, y1)) != 1))
 			{
 				MDelit();
 				MoviesAdd(x1, y1);
@@ -1246,7 +1230,7 @@ public:
 				y1 = Movies.front();
 				Movies.pop_front();
 
-				if ((ShotComputer1(x1, y1) == 1) && (com.Kill(com.ReturnShip1(x1, y1)) != 1))//2
+				if ((ShotComputer1(x1, y1) == 1) && (KillCom(ReturnShipXCom(x1, y1)) != 1))//2
 				{
 					MDelit();
 					MoviesAdd(x1, y1);
@@ -1261,7 +1245,7 @@ public:
 					Movies.pop_front();
 					y1 = Movies.front();
 					Movies.pop_front();
-					if ((ShotComputer1(x1, y1) == 1) && (com.Kill(com.ReturnShip1(x1, y1)) != 1))//3
+					if ((ShotComputer1(x1, y1) == 1) && (KillCom(ReturnShipXCom(x1, y1)) != 1))//3
 					{
 						MDelit();
 						MoviesAdd(x1, y1);
@@ -1276,11 +1260,11 @@ public:
 						Movies.pop_front();
 						y1 = Movies.front();
 						Movies.pop_front();
-						if ((ShotComputer1(x1, y1) == 1) && (com.Kill(com.ReturnShip1(x1, y1)) == 1))
+						if ((ShotComputer1(x1, y1) == 1) && (KillCom(ReturnShipXCom(x1, y1)) == 1))
 						{
 							status = 1;
 							counter = 0;
-							us.ExShip(x1, y1);
+							ExShipUs(x1, y1);
 						}
 						else
 						{
@@ -1296,11 +1280,11 @@ public:
 							Movies.pop_front();
 							y1 = Movies.front();
 							Movies.pop_front();
-							if ((ShotComputer1(x1, y1) == 1) && (com.Kill(com.ReturnShip1(x1, y1)) == 1))
+							if ((ShotComputer1(x1, y1) == 1) && (KillCom(ReturnShipXCom(x1, y1)) == 1))
 							{
 								counter = 0;
 								status = 1;
-								us.ExShip(x1, y1);
+								ExShipUs(x1, y1);
 							}
 						}
 					}
@@ -1324,13 +1308,13 @@ public:
 				status = 0;
 				counter++;
 			}
-			if ((ShotComputer1(x1, y1) == 1) && (com.Kill(com.ReturnShip1(x1, y1)) == 1))
+			if ((ShotComputer1(x1, y1) == 1) && (KillCom(ReturnShipXCom(x1, y1)) == 1))
 			{
 				status = 1;
 				counter = 0;
-				us.ExShip(x1, y1);
+				ExShipUs(x1, y1);
 			}
-			if ((ShotComputer1(x1, y1) == 1) && (com.Kill(com.ReturnShip1(x1, y1)) != 1))
+			if ((ShotComputer1(x1, y1) == 1) && (KillCom(ReturnShipXCom(x1, y1)) != 1))
 			{
 
 				MDelit();
@@ -1345,7 +1329,7 @@ public:
 				y1 = Movies.front();
 				Movies.pop_front();
 
-				if ((ShotComputer1(x1, y1) == 1) && (com.Kill(com.ReturnShip1(x1, y1)) != 1))//2
+				if ((ShotComputer1(x1, y1) == 1) && (KillCom(ReturnShipXCom(x1, y1)) != 1))//2
 				{
 					MDelit();
 					MoviesAdd(x1, y1);
@@ -1360,7 +1344,7 @@ public:
 					Movies.pop_front();
 					y1 = Movies.front();
 					Movies.pop_front();
-					if ((ShotComputer1(x1, y1) == 1) && (com.Kill(com.ReturnShip1(x1, y1)) != 1))//3
+					if ((ShotComputer1(x1, y1) == 1) && (KillCom(ReturnShipXCom(x1, y1)) != 1))//3
 					{
 						MDelit();
 						MoviesAdd(x1, y1);
@@ -1375,11 +1359,11 @@ public:
 						Movies.pop_front();
 						y1 = Movies.front();
 						Movies.pop_front();
-						if ((ShotComputer1(x1, y1) == 1) && (com.Kill(com.ReturnShip1(x1, y1)) == 1))
+						if ((ShotComputer1(x1, y1) == 1) && (KillCom(ReturnShipXCom(x1, y1)) == 1))
 						{
 							status = 1;
 							counter = 0;
-							us.ExShip(x1, y1);
+							ExShipUs(x1, y1);
 						}
 						else
 						{
@@ -1395,11 +1379,11 @@ public:
 							Movies.pop_front();
 							y1 = Movies.front();
 							Movies.pop_front();
-							if ((ShotComputer1(x1, y1) == 1) && (com.Kill(com.ReturnShip1(x1, y1)) == 1))
+							if ((ShotComputer1(x1, y1) == 1) && (KillCom(ReturnShipXCom(x1, y1)) == 1))
 							{
 								counter = 0;
 								status = 1;
-								us.ExShip(x1, y1);
+								ExShipUs(x1, y1);
 							}
 						}
 					}
@@ -1407,7 +1391,7 @@ public:
 			}
 		}
 		return status;
-	} //
+	} 
 	//
 	int ReturnVX()
 	{
@@ -1417,6 +1401,53 @@ public:
 	int ReturnVY()
 	{
 		return vXY[1];
+	}
+
+	void PrintCom()
+	{
+		int size = com.ReturnSizeCom();
+		for (int x = 0; x < size; x++) {
+			for (int y = 0; y < size; y++)
+			{
+				cout << com.ReturnVCom(x, y);
+			}
+			cout << "\n";
+		}
+	}
+
+	void Print2Com()
+	{
+		int size = com.ReturnSizeComUs();
+		for (int x = 0; x < size; x++) {
+			for (int y = 0; y < size; y++)
+			{
+				cout << com.ReturnVComUser(x, y);
+			}
+			cout << "\n";
+		}
+	}
+
+	void PrintUs()
+	{
+		int size = us.ReturnSizeUs();
+		for (int x = 0; x < size; x++) {
+			for (int y = 0; y < size; y++)
+			{
+				cout << us.ReturnVUs(x, y);
+			}
+			cout << "\n";
+		}
+	}
+	void Print2Us()
+	{
+		int size = us.ReturnSizeUsCom();
+		for (int x = 0; x < size; x++) {
+			for (int y = 0; y < size; y++)
+			{
+				cout << us.ReturnVUsCom(x, y);
+			}
+			cout << "\n";
+		}
 	}
 };
 
@@ -1468,7 +1499,7 @@ void main()
 	int CounterShip = 0;
 	int tmp, status;
 	int tmpprov = 1;
-	com.Ship();
+	game.ShipCom();
 	/*for (int i = 4; i >= 1; i--)
 	{
 		tmp = 4;
@@ -1477,7 +1508,7 @@ void main()
 			status = 0;
 			while (status == 0)
 			{
-				us.Print();
+				game.PrintUs();
 				cout << "Введите координаты "<<i<<"-х палубного корабля: \n";
 				cout << "x = ";
 				cin >> x;
@@ -1486,7 +1517,7 @@ void main()
 				cout << "Введите положение корабля 0 - горизотальное, 1 - вертикальное: \n";
 				cout << "StatusShip = ";
 				cin >> StatusShip;
-				status = us.ShipUser(x, y, StatusShip, i, CounterShip);
+				status = game.ShipUser(x, y, StatusShip, i, CounterShip);
 				system("cls");
 			}
 			CounterShip++;
@@ -1494,14 +1525,15 @@ void main()
 		}
 	}*/
 
-	cout << "\\\\\\\\\\\\\\\\ com ";
-	com.Print();
-	cout << "\\\\\\\\\\\\\\\\ us ";
-	us.Print();
+	cout << "\\\\\\\\\\\\\\\\ com \n";
+	game.PrintCom();
+	cout << "\\\\\\\\\\\\\\\\ us \n";
+	game.PrintUs();
 	cout << "\\\\\\\\\\\\\\\\";
 
-	int UsLoss = us.Loss();
-	int ComLoss = com.Loss();
+
+	int UsLoss = game.LossUs();
+	int ComLoss = game.LossCom();
 	int ShotUser;
 	int ShotCom;
 	int KillUser;
@@ -1509,10 +1541,10 @@ void main()
 	
 	while ((UsLoss == 0) || (ComLoss == 0))
 	{
-		cout << "\\\\\\\\\\\\\\\\ us";
-		us.Print();
-		cout << "\\\\\\\\\\\\\\\\ us com";
-		us.Print2();
+		cout << "\\\\\\\\\\\\\\\\ us \n";
+		game.PrintUs();
+		cout << "\\\\\\\\\\\\\\\\ us com \n";
+		game.Print2Us();
 		cout << "\\\\\\\\\\\\\\\\";
 		cout << "\n";
 		cout << "Введите координаты: \n";
@@ -1522,31 +1554,37 @@ void main()
 		cin >> y;
 		ShotUser = game.ShotUser(x, y);
 		
-		if (ShotUser == 1) {
-			cout << "Попал \n";
-			KillUser = com.Kill(com.ReturnShip1(x, y));
-			if (KillUser == 1)
+		while (ShotUser == 1)
+		{
+			if (ShotUser == 1)
 			{
-				cout << "Потопил \n";
-			}
-			while (ShotUser == 1)
-			{
-				cout << "Введите координаты: \n";
+				cout << "Попал \n";
+				KillUser = game.KillCom(game.ReturnShipXCom(x, y));
+				if (KillUser == 1)
+				{
+					cout << "Потопил \n";
+				}
+				cout << "Введите координаты 2: \n";
 				cout << "x = ";
 				cin >> x;
 				cout << "y = ";
 				cin >> y;
 				ShotUser = game.ShotUser(x, y);
+				if (ShotUser == 0)
+				{
+					cout << "Промах \n";
+				}
 			}
-		}
-		else 
+			else 
 			cout << "Промах \n";
+		}
+		
 
 
 		//комп
-		com.Print();
+		game.PrintCom();
 		cout << "\n";
-		com.Print2();
+		game.Print2Com();
 		cout << "\n";
 	
 		if (tmpprov == 1)
@@ -1559,7 +1597,7 @@ void main()
 			game.MDelit();
 			game.MoviesAdd(x1, y1);
 		}
-		KillCom = us.Kill(us.ReturnShip1(x1, y1)); // проверка убил
+		KillCom = game.KillUs(game.ReturnShipXUs(x1, y1)); // проверка убил
 		if ((ShotCom == 1) && (KillUser == 1)) {
 			
 			cout << "Компьютер потопил \n";
@@ -1577,10 +1615,9 @@ void main()
 		else
 			cout << "Компьютер промахнулся \n";
 		system("cls");
-		UsLoss = us.Loss();
-		ComLoss = com.Loss();
+		UsLoss = game.LossUs();
+		ComLoss = game.LossCom();
 	}
-		
 		
 	system("pause");
 }
